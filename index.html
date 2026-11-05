@@ -17,12 +17,13 @@
     :root {
       --bg: #0a0a0c;
       --card-bg: #141418;
-      --card-border: rgba(255, 255, 255, 0.06);
+      --card-border: rgba(255, 255, 255, 0.07);
       --accent: #d4a373;
       --accent-dim: rgba(212, 163, 115, 0.15);
       --text-main: #f4f4f5;
       --text-muted: #8b8b94;
       --danger: #ef4444;
+      --danger-dim: rgba(239, 68, 68, 0.15);
       --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
     }
 
@@ -47,17 +48,53 @@
     }
 
     header {
-      padding: 1.2rem 0 0.8rem;
-      text-align: center;
+      padding: 1rem 0 0.4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 420px;
+      margin: 0 auto;
+      width: 100%;
     }
 
     .app-title {
-      font-size: 1.1rem;
-      letter-spacing: 0.25em;
+      font-size: 1rem;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--accent);
       font-weight: 500;
-      opacity: 0.9;
+      opacity: 0.95;
+    }
+
+    .btn-header-action {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .btn-header-action:active {
+      transform: scale(0.92);
+      background: var(--accent-dim);
+    }
+
+    /* Fixed Upper Stage - keeps lower dashboard strictly anchored */
+    .top-interactive-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 440px;
+      justify-content: space-between;
+      margin-top: 0.4rem;
+      margin-bottom: 1.2rem;
     }
 
     /* Mode Switcher */
@@ -67,9 +104,8 @@
       border: 1px solid var(--card-border);
       border-radius: 999px;
       padding: 4px;
-      margin: 1.2rem auto;
-      max-width: 320px;
       width: 100%;
+      max-width: 300px;
     }
 
     .mode-btn {
@@ -78,7 +114,7 @@
       border: none;
       background: transparent;
       color: var(--text-muted);
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 500;
       border-radius: 999px;
       cursor: pointer;
@@ -92,19 +128,10 @@
     }
 
     /* Central Timer/Stopwatch Dial */
-    .display-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      margin: 2rem 0;
-      position: relative;
-    }
-
     .circle-wrapper {
       position: relative;
-      width: 250px;
-      height: 250px;
+      width: 220px;
+      height: 220px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -128,46 +155,70 @@
       stroke-width: 4;
       stroke-linecap: round;
       fill: transparent;
-      stroke-dasharray: 754;
+      stroke-dasharray: 660;
       stroke-dashoffset: 0;
-      transition: stroke-dashoffset 0.3s ease;
+      transition: stroke-dashoffset 0.25s linear;
     }
 
     .timer-text-wrap {
       text-align: center;
       z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .time-digits {
-      font-size: 3.5rem;
+      font-size: 3.3rem;
       font-weight: 300;
       letter-spacing: -0.02em;
       font-variant-numeric: tabular-nums;
+      cursor: default;
+    }
+
+    .time-digits.clickable {
+      cursor: pointer;
+    }
+
+    .time-digits.clickable:active {
+      opacity: 0.7;
     }
 
     .time-sub {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: var(--text-muted);
       margin-top: 4px;
       height: 18px;
     }
 
-    /* Preset Chips */
+    /* Fixed-height Presets bar: visibility toggled, never shifts vertical layout */
+    .presets-container {
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+    }
+
     .presets {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       justify-content: center;
-      margin-bottom: 2rem;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
+    }
+
+    .presets.hidden {
+      visibility: hidden;
+      pointer-events: none;
     }
 
     .chip {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       color: var(--text-muted);
-      padding: 6px 14px;
-      border-radius: 12px;
-      font-size: 0.82rem;
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-size: 0.78rem;
       cursor: pointer;
       transition: all 0.2s;
     }
@@ -178,21 +229,28 @@
       background: var(--accent-dim);
     }
 
-    /* Controls */
+    /* Fixed-height Controls bar */
+    .controls-container {
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+    }
+
     .controls {
       display: flex;
-      gap: 16px;
+      gap: 18px;
       justify-content: center;
       align-items: center;
-      margin-bottom: 2.5rem;
     }
 
     .btn-action {
       background: var(--accent);
       color: #0a0a0c;
       border: none;
-      width: 64px;
-      height: 64px;
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
       font-size: 1.1rem;
       font-weight: 600;
@@ -200,7 +258,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 20px rgba(212, 163, 115, 0.25);
+      box-shadow: 0 4px 18px rgba(212, 163, 115, 0.25);
       transition: transform 0.15s, opacity 0.15s;
     }
 
@@ -212,11 +270,11 @@
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       color: var(--text-muted);
-      width: 48px;
-      height: 48px;
+      width: 46px;
+      height: 46px;
       border-radius: 50%;
       cursor: pointer;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -224,35 +282,59 @@
     }
 
     .btn-secondary:disabled {
-      opacity: 0.3;
+      opacity: 0.25;
       cursor: not-allowed;
     }
 
-    /* Dashboard & Metrics */
+    .btn-secondary.hidden-slot {
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    /* Dashboard & Metrics - Perfectly stable height */
     .dashboard {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
-      margin-bottom: 2rem;
+      margin-bottom: 1.6rem;
     }
 
     .card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 18px;
+      border-radius: 16px;
       padding: 1.1rem;
+      position: relative;
+    }
+
+    .card.clickable {
+      cursor: pointer;
+    }
+
+    .card.clickable:active {
+      background: rgba(255, 255, 255, 0.03);
     }
 
     .card-label {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       text-transform: uppercase;
       letter-spacing: 0.08em;
       color: var(--text-muted);
       margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-label-hint {
+      font-size: 0.65rem;
+      color: var(--accent);
+      text-transform: none;
+      letter-spacing: 0;
     }
 
     .card-val {
-      font-size: 1.7rem;
+      font-size: 1.65rem;
       font-weight: 500;
       color: var(--text-main);
     }
@@ -270,7 +352,7 @@
     }
 
     .section-title {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       text-transform: uppercase;
       letter-spacing: 0.1em;
       color: var(--text-muted);
@@ -291,7 +373,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
     }
 
     .history-date {
@@ -307,7 +389,173 @@
       text-align: center;
       color: var(--text-muted);
       font-size: 0.85rem;
-      padding: 1.5rem 0;
+      padding: 1.2rem 0;
+    }
+
+    /* Modal Sheet Styling */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .modal-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-sheet {
+      background: #18181d;
+      border: 1px solid var(--card-border);
+      border-bottom: none;
+      border-radius: 24px 24px 0 0;
+      width: 100%;
+      max-width: 480px;
+      padding: 1.5rem 1.4rem calc(1.5rem + env(safe-area-inset-bottom, 20px));
+      transform: translateY(100%);
+      transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-backdrop.open .modal-sheet {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.2rem;
+    }
+
+    .modal-title {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--text-main);
+    }
+
+    .modal-close {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.4rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: 4px;
+    }
+
+    .modal-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .input-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+
+    .input-field {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 1.1rem;
+      color: var(--text-main);
+      font-family: inherit;
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    .input-field:focus {
+      border-color: var(--accent);
+    }
+
+    .modal-btn-submit {
+      background: var(--accent);
+      color: #0a0a0c;
+      border: none;
+      border-radius: 14px;
+      padding: 14px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 0.6rem;
+      transition: opacity 0.2s;
+    }
+
+    .modal-btn-submit:active {
+      opacity: 0.85;
+    }
+
+    /* Sessions Delete List inside Modal */
+    .session-items-scroll {
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 0.5rem;
+      max-height: 55vh;
+    }
+
+    .session-item {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 12px 14px;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .session-item-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .session-item-mins {
+      font-weight: 500;
+      color: var(--text-main);
+      font-size: 1rem;
+    }
+
+    .session-item-time {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .btn-delete-session {
+      background: var(--danger-dim);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: var(--danger);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
     }
   </style>
 </head>
@@ -315,43 +563,56 @@
 
   <header>
     <div class="app-title">Zen Practice</div>
+    <button class="btn-header-action" onclick="openManualEntryModal()" title="Χειροκίνητη Καταχώρηση">+</button>
   </header>
 
-  <nav class="mode-nav">
-    <button class="mode-btn active" id="btnModeStopwatch" onclick="switchMode('stopwatch')">Stopwatch</button>
-    <button class="mode-btn" id="btnModeTimer" onclick="switchMode('timer')">Timer</button>
-  </nav>
+  <!-- Anchored Top Stage: 440px fixed height ensures lower stats never move -->
+  <div class="top-interactive-stage">
+    <nav class="mode-nav">
+      <button class="mode-btn active" id="btnModeStopwatch" onclick="switchMode('stopwatch')">Stopwatch</button>
+      <button class="mode-btn" id="btnModeTimer" onclick="switchMode('timer')">Timer</button>
+    </nav>
 
-  <div class="display-container">
     <div class="circle-wrapper">
-      <svg class="progress-ring" width="250" height="250">
-        <circle class="progress-ring-bg" cx="125" cy="125" r="120" />
-        <circle class="progress-ring-circle" id="progressRing" cx="125" cy="125" r="120" />
+      <svg class="progress-ring" width="220" height="220">
+        <circle class="progress-ring-bg" cx="110" cy="110" r="105" />
+        <circle class="progress-ring-circle" id="progressRing" cx="110" cy="110" r="105" />
       </svg>
       <div class="timer-text-wrap">
-        <div class="time-digits" id="timeDisplay">00:00</div>
+        <div class="time-digits" id="timeDisplay" onclick="onTimeDisplayClick()">00:00</div>
         <div class="time-sub" id="timeSub">0.0 λήξη</div>
+      </div>
+    </div>
+
+    <!-- Presets bar: reserved space, toggled with visibility -->
+    <div class="presets-container">
+      <div class="presets hidden" id="presetRow">
+        <button class="chip" onclick="setTimerMinutes(3)">3λ</button>
+        <button class="chip" onclick="setTimerMinutes(5)">5λ</button>
+        <button class="chip active" onclick="setTimerMinutes(10)">10λ</button>
+        <button class="chip" onclick="setTimerMinutes(15)">15λ</button>
+        <button class="chip" onclick="setTimerMinutes(20)">20λ</button>
+        <button class="chip" onclick="openCustomTimerModal()">Άλλο</button>
+      </div>
+    </div>
+
+    <!-- Controls bar: reserved space, button hidden slot used for stopwatch checkmark -->
+    <div class="controls-container">
+      <div class="controls">
+        <button class="btn-secondary" id="btnReset" onclick="resetCurrentSession()" title="Επαναφορά" disabled>✕</button>
+        <button class="btn-action" id="btnToggle" onclick="toggleSession()">▶</button>
+        <button class="btn-secondary" id="btnSave" onclick="manualSaveStopwatch()" title="Ολοκλήρωση" disabled>✓</button>
       </div>
     </div>
   </div>
 
-  <div class="presets" id="presetRow" style="display: none;">
-    <button class="chip" onclick="setTimerMinutes(3)">3λ</button>
-    <button class="chip" onclick="setTimerMinutes(5)">5λ</button>
-    <button class="chip active" onclick="setTimerMinutes(10)">10λ</button>
-    <button class="chip" onclick="setTimerMinutes(15)">15λ</button>
-    <button class="chip" onclick="setTimerMinutes(20)">20λ</button>
-  </div>
-
-  <div class="controls">
-    <button class="btn-secondary" id="btnReset" onclick="resetCurrentSession()" title="Επαναφορά" disabled>✕</button>
-    <button class="btn-action" id="btnToggle" onclick="toggleSession()">▶</button>
-    <button class="btn-secondary" id="btnSave" onclick="manualSaveStopwatch()" title="Ολοκλήρωση" disabled>✓</button>
-  </div>
-
+  <!-- Lower Static Area: Positional anchor never fluctuates -->
   <div class="dashboard">
-    <div class="card">
-      <div class="card-label">Σήμερα</div>
+    <div class="card clickable" onclick="openManageSessionsModal()" title="Πάτησε για διαχείριση συνεδριών">
+      <div class="card-label">
+        <span>Σήμερα</span>
+        <span class="card-label-hint">Προβολή ↗</span>
+      </div>
       <div class="card-val"><span id="metricToday">0.0</span><span class="card-unit">λ</span></div>
     </div>
     <div class="card">
@@ -367,6 +628,55 @@
     </div>
   </div>
 
+  <!-- Modal 1: Manual Direct Session Entry -->
+  <div class="modal-backdrop" id="modalManualEntry" onclick="onBackdropClick(event, 'modalManualEntry')">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <div class="modal-title">Καταχώρηση Συνεδρίας</div>
+        <button class="modal-close" onclick="closeModal('modalManualEntry')">×</button>
+      </div>
+      <div class="modal-form">
+        <div class="input-group">
+          <label class="input-label">Διάρκεια (Λεπτά)</label>
+          <input type="number" step="0.5" min="0.5" id="manualMinutesInput" class="input-field" placeholder="π.χ. 15 ή 10.5" inputmode="decimal">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Ημερομηνία</label>
+          <input type="date" id="manualDateInput" class="input-field">
+        </div>
+        <button class="modal-btn-submit" onclick="submitManualEntry()">Αποθήκευση</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Edit Custom Timer Time -->
+  <div class="modal-backdrop" id="modalCustomTimer" onclick="onBackdropClick(event, 'modalCustomTimer')">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <div class="modal-title">Ορισμός Χρόνου Timer</div>
+        <button class="modal-close" onclick="closeModal('modalCustomTimer')">×</button>
+      </div>
+      <div class="modal-form">
+        <div class="input-group">
+          <label class="input-label">Λεπτά Διαλογισμού</label>
+          <input type="number" min="1" max="180" id="customTimerInput" class="input-field" placeholder="π.χ. 25" inputmode="numeric">
+        </div>
+        <button class="modal-btn-submit" onclick="submitCustomTimer()">Εφαρμογή</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: View & Delete Today's / Recent Sessions -->
+  <div class="modal-backdrop" id="modalManageSessions" onclick="onBackdropClick(event, 'modalManageSessions')">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <div class="modal-title">Συνεδρίες Σήμερα</div>
+        <button class="modal-close" onclick="closeModal('modalManageSessions')">×</button>
+      </div>
+      <div class="session-items-scroll" id="sessionItemsContainer"></div>
+    </div>
+  </div>
+
   <script>
     /* --- Storage Keys --- */
     const STORAGE_KEY = 'zen_meditation_sessions_v1';
@@ -379,7 +689,7 @@
     let intervalId = null;
     let wakeLock = null;
 
-    const ringRadius = 120;
+    const ringRadius = 105;
     const ringCircumference = 2 * Math.PI * ringRadius;
 
     // Elements
@@ -424,7 +734,7 @@
       }
     }
 
-    /* --- Wake Lock --- */
+    /* --- Screen Wake Lock --- */
     async function requestWakeLock() {
       try {
         if ('wakeLock' in navigator) {
@@ -457,16 +767,11 @@
       return date;
     }
 
-    function getWeekKey(d) {
-      const mon = getMondayOfWeek(d);
-      return getTodayDateString(mon);
-    }
-
     function formatShortDate(d) {
       return `${d.getDate()}/${d.getMonth() + 1}`;
     }
 
-    /* --- Session Data Operations --- */
+    /* --- Session Storage Operations --- */
     function getSessions() {
       try {
         return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
@@ -475,38 +780,65 @@
       }
     }
 
-    function saveSessionRecord(minutes) {
+    function saveSessionRecord(minutes, dateStr = null) {
       if (minutes <= 0) return;
       const sessions = getSessions();
       sessions.push({
-        id: Date.now(),
-        date: getTodayDateString(),
+        id: Date.now() + Math.random(),
+        date: dateStr || getTodayDateString(),
+        timeStr: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         minutes: Number(minutes)
       });
       localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions));
       renderDashboard();
     }
 
-    /* --- Calculation Rules --- */
-    // Stopwatch: round down to nearest 0.5 minute
+    function deleteSession(id) {
+      let sessions = getSessions();
+      sessions = sessions.filter(s => s.id !== id);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions));
+      renderDashboard();
+      renderTodaySessionsList();
+    }
+
+    /* --- Rounding & Calculation Rules --- */
+    // Stopwatch: round down to the nearest half-minute (0.5m)
     function roundStopwatchMinutes(seconds) {
       return Math.floor(seconds / 30) * 0.5;
     }
 
-    // Weekly average: always divide by 7, truncate down to 1 decimal place
+    // Weekly average: divide total by 7, truncate down to 1 decimal place
     function calculateDailyAverageTruncated(totalMinutes) {
       return Math.floor((totalMinutes / 7) * 10) / 10;
     }
 
-    /* --- Mode Switching --- */
+    /* --- Mode Switching (Zero Layout Shift) --- */
     function switchMode(mode) {
       if (isRunning) resetCurrentSession();
       currentMode = mode;
+      
       document.getElementById('btnModeStopwatch').classList.toggle('active', mode === 'stopwatch');
       document.getElementById('btnModeTimer').classList.toggle('active', mode === 'timer');
-      presetRow.style.display = mode === 'timer' ? 'flex' : 'none';
-      btnSave.style.display = mode === 'stopwatch' ? 'flex' : 'none';
+
+      if (mode === 'timer') {
+        presetRow.classList.remove('hidden');
+        btnSave.classList.add('hidden-slot');
+        timeDisplay.classList.add('clickable');
+        timeDisplay.title = "Πάτησε για να αλλάξεις το χρόνο";
+      } else {
+        presetRow.classList.add('hidden');
+        btnSave.classList.remove('hidden-slot');
+        timeDisplay.classList.remove('clickable');
+        timeDisplay.title = "";
+      }
+
       updateDisplay();
+    }
+
+    function onTimeDisplayClick() {
+      if (currentMode === 'timer' && !isRunning) {
+        openCustomTimerModal();
+      }
     }
 
     function setTimerMinutes(mins) {
@@ -597,7 +929,7 @@
         const m = Math.floor(remaining / 60);
         const s = remaining % 60;
         timeDisplay.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-        timeSub.textContent = `Στόχος: ${(timerDurationSeconds / 60)}λ`;
+        timeSub.textContent = `Στόχος: ${(timerDurationSeconds / 60)}λ (άγγιξε για αλλαγή)`;
 
         const progress = elapsedSeconds / timerDurationSeconds;
         progressRing.style.strokeDashoffset = ringCircumference * (1 - progress);
@@ -618,7 +950,7 @@
         .reduce((acc, cur) => acc + cur.minutes, 0);
       metricToday.textContent = todaySum.toFixed(1);
 
-      // 2. Current week live average (/ 7, round down 1 decimal)
+      // 2. Current week live average (/ 7, round down to 1 decimal)
       const currentWeekSunday = new Date(currentMonday);
       currentWeekSunday.setDate(currentWeekSunday.getDate() + 6);
       const currentSundayStr = getTodayDateString(currentWeekSunday);
@@ -638,7 +970,6 @@
         const sMonday = getMondayOfWeek(sDate);
         const sMondayStr = getTodayDateString(sMonday);
 
-        // Include only weeks strictly prior to current week
         if (sMonday < currentMonday) {
           if (!pastWeeksMap[sMondayStr]) {
             pastWeeksMap[sMondayStr] = {
@@ -669,6 +1000,82 @@
       }
     }
 
+    /* --- Modals Handling --- */
+    function openModal(id) {
+      document.getElementById(id).classList.add('open');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('open');
+    }
+
+    function onBackdropClick(event, id) {
+      if (event.target.id === id) {
+        closeModal(id);
+      }
+    }
+
+    // Modal 1: Direct Session Entry
+    function openManualEntryModal() {
+      document.getElementById('manualDateInput').value = getTodayDateString();
+      document.getElementById('manualMinutesInput').value = '';
+      openModal('modalManualEntry');
+      setTimeout(() => document.getElementById('manualMinutesInput').focus(), 150);
+    }
+
+    function submitManualEntry() {
+      const val = parseFloat(document.getElementById('manualMinutesInput').value);
+      const dateVal = document.getElementById('manualDateInput').value;
+      if (val && val > 0) {
+        saveSessionRecord(val, dateVal || getTodayDateString());
+        closeModal('modalManualEntry');
+      }
+    }
+
+    // Modal 2: Custom Timer Duration
+    function openCustomTimerModal() {
+      document.getElementById('customTimerInput').value = Math.round(timerDurationSeconds / 60);
+      openModal('modalCustomTimer');
+      setTimeout(() => document.getElementById('customTimerInput').focus(), 150);
+    }
+
+    function submitCustomTimer() {
+      const val = parseInt(document.getElementById('customTimerInput').value, 10);
+      if (val && val > 0) {
+        document.querySelectorAll('.presets .chip').forEach(c => c.classList.remove('active'));
+        setTimerMinutes(val);
+        closeModal('modalCustomTimer');
+      }
+    }
+
+    // Modal 3: View & Delete Sessions
+    function openManageSessionsModal() {
+      renderTodaySessionsList();
+      openModal('modalManageSessions');
+    }
+
+    function renderTodaySessionsList() {
+      const container = document.getElementById('sessionItemsContainer');
+      const sessions = getSessions();
+      const todayStr = getTodayDateString();
+      const todaySessions = sessions.filter(s => s.date === todayStr).reverse();
+
+      if (todaySessions.length === 0) {
+        container.innerHTML = `<div class="empty-state">Δεν υπάρχουν καταχωρημένες συνεδρίες για σήμερα.</div>`;
+        return;
+      }
+
+      container.innerHTML = todaySessions.map(s => `
+        <div class="session-item">
+          <div class="session-item-info">
+            <span class="session-item-mins">${s.minutes.toFixed(1)} λεπτά</span>
+            <span class="session-item-time">${s.timeStr ? 'Ώρα: ' + s.timeStr : 'Χειροκίνητη εγγραφή'}</span>
+          </div>
+          <button class="btn-delete-session" onclick="deleteSession(${s.id})" title="Διαγραφή">✕</button>
+        </div>
+      `).join('');
+    }
+
     /* --- Service Worker Registration & Auto-Update --- */
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
@@ -687,7 +1094,7 @@
     }
 
     // Initialize UI
-    updateDisplay();
+    switchMode('stopwatch');
     renderDashboard();
   </script>
 </body>
