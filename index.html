@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="el">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -95,7 +95,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+      transition: transform 0.15s ease, background-color 0.2s ease, color 0.2s ease;
     }
 
     .btn-header-action:active {
@@ -140,7 +140,7 @@
       font-weight: 500;
       border-radius: 999px;
       cursor: pointer;
-      transition: all 0.22s ease;
+      transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
     }
 
     .mode-btn.active {
@@ -180,7 +180,7 @@
       fill: transparent;
       stroke-dasharray: 660;
       stroke-dashoffset: 0;
-      transition: stroke-dashoffset 0.25s linear;
+      transition: stroke-dashoffset 0.2s linear;
     }
 
     .timer-text-wrap {
@@ -199,7 +199,7 @@
       line-height: 1;
     }
 
-    /* Stepper Redesign (Option A: Minimal with hold-to-repeat) */
+    /* Stepper */
     .presets-container {
       height: 44px;
       display: flex;
@@ -223,8 +223,7 @@
     }
 
     .time-stepper.hidden {
-      visibility: hidden;
-      pointer-events: none;
+      display: none !important;
     }
 
     .stepper-btn-circle {
@@ -238,7 +237,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.15s ease;
+      transition: transform 0.15s ease, background-color 0.15s ease;
       touch-action: none;
     }
 
@@ -319,7 +318,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+      transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, opacity 0.15s ease;
     }
 
     .btn-secondary:hover:not(:disabled) {
@@ -337,12 +336,15 @@
       cursor: not-allowed;
     }
 
+    /* Άμεση εξαφάνιση χωρίς καθυστέρηση (delay) */
     .btn-secondary.hidden-slot {
-      visibility: hidden;
-      pointer-events: none;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transition: none !important;
     }
 
-    /* Dashboard Metrics (Glassmorphism Cards) */
+    /* Dashboard Metrics */
     .dashboard {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -360,7 +362,7 @@
       padding: 1.1rem 1.2rem;
       position: relative;
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22);
-      transition: border-color 0.2s, background 0.2s;
+      transition: border-color 0.2s, background-color 0.2s;
     }
 
     .card.clickable {
@@ -463,7 +465,7 @@
       padding: 1.2rem 0;
     }
 
-    /* Modals & Ergonomic Bottom Sheets */
+    /* Modals & Bottom Sheets */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -476,7 +478,7 @@
       z-index: 100;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.26s ease;
+      transition: opacity 0.25s ease;
     }
 
     .modal-backdrop.open {
@@ -485,7 +487,7 @@
     }
 
     .modal-sheet {
-      background: rgba(22, 22, 28, 0.88);
+      background: rgba(22, 22, 28, 0.92);
       backdrop-filter: blur(28px);
       -webkit-backdrop-filter: blur(28px);
       border: 1px solid var(--card-border-highlight);
@@ -495,7 +497,7 @@
       max-width: 480px;
       padding: 0.75rem 1.4rem calc(1.4rem + env(safe-area-inset-bottom, 20px));
       transform: translateY(100%);
-      transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+      transition: transform 0.26s cubic-bezier(0.2, 0.8, 0.2, 1);
       max-height: 85vh;
       display: flex;
       flex-direction: column;
@@ -539,7 +541,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.15s ease;
+      transition: transform 0.15s ease, background-color 0.15s ease;
     }
 
     .modal-close:active {
@@ -578,7 +580,7 @@
       font-family: inherit;
       outline: none;
       -webkit-appearance: none;
-      transition: all 0.2s ease;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
     }
 
     .input-field:focus {
@@ -656,7 +658,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: transform 0.15s ease;
+      transition: transform 0.15s ease, background-color 0.15s ease;
     }
 
     .btn-delete-session:active {
@@ -670,7 +672,7 @@
   <div class="app-wrapper">
     <header>
       <div class="app-title">ZEN</div>
-      <button class="btn-header-action" onclick="openManualEntryModal()" title="Manual Log" aria-label="Manual Log">
+      <button class="btn-header-action" onclick="openManualEntryModal()" title="Χειροκίνητη Καταγραφή" aria-label="Χειροκίνητη Καταγραφή">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="12" y1="5" x2="12" y2="19"></line>
           <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -696,7 +698,7 @@
 
       <div class="presets-container">
         <div class="time-stepper hidden" id="stepperRow">
-          <button class="stepper-btn-circle" id="stepperDec" aria-label="Decrease time">
+          <button class="stepper-btn-circle" id="stepperDec" aria-label="Μείωση χρόνου">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
               <line x1="5" y1="12" x2="19" y2="12"></line>
             </svg>
@@ -705,7 +707,7 @@
             <span class="stepper-label" id="stepperDurationLabel">10</span>
             <span class="stepper-unit">min</span>
           </div>
-          <button class="stepper-btn-circle" id="stepperInc" aria-label="Increase time">
+          <button class="stepper-btn-circle" id="stepperInc" aria-label="Αύξηση χρόνου">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
               <line x1="12" y1="5" x2="12" y2="19"></line>
               <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -716,18 +718,18 @@
 
       <div class="controls-container">
         <div class="controls">
-          <button class="btn-secondary" id="btnReset" onclick="resetCurrentSession()" title="Reset" aria-label="Reset" disabled>
+          <button class="btn-secondary" id="btnReset" onclick="resetCurrentSession()" title="Επαναφορά" aria-label="Reset" disabled>
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
           </button>
-          <button class="btn-action" id="btnToggle" onclick="toggleSession()" title="Start / Pause" aria-label="Start">
+          <button class="btn-action" id="btnToggle" onclick="toggleSession()" title="Έναρξη / Παύση" aria-label="Start">
             <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" style="transform: translateX(1.5px);">
               <polygon points="6 4 20 12 6 20"></polygon>
             </svg>
           </button>
-          <button class="btn-secondary" id="btnSave" onclick="manualSaveStopwatch()" title="Finish" aria-label="Save" disabled>
+          <button class="btn-secondary" id="btnSave" onclick="manualSaveStopwatch()" title="Ολοκλήρωση & Αποθήκευση" aria-label="Save" disabled>
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="20 6 9 17 4 12"></polyline>
             </svg>
@@ -737,11 +739,11 @@
     </div>
 
     <div class="dashboard">
-      <div class="card clickable" onclick="openManageSessionsModal()" title="View today's sessions">
+      <div class="card clickable" onclick="openManageSessionsModal()" title="Προβολή σημερινών συνεδριών">
         <div class="card-label">
-          <span>Today</span>
+          <span>Σήμερα</span>
           <span class="card-label-hint">
-            View
+            Προβολή
             <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="7" y1="17" x2="17" y2="7"></line>
               <polyline points="7 7 17 7 17 17"></polyline>
@@ -751,15 +753,15 @@
         <div class="card-val"><span id="metricToday">0.0</span><span class="card-unit">min</span></div>
       </div>
       <div class="card">
-        <div class="card-label">Current Week</div>
-        <div class="card-val"><span id="metricWeekAvg">0.0</span><span class="card-unit">min/day</span></div>
+        <div class="card-label">Τρέχουσα Εβδομάδα</div>
+        <div class="card-val"><span id="metricWeekAvg">0.0</span><span class="card-unit">min/ημ</span></div>
       </div>
     </div>
 
     <div class="history-section">
-      <div class="section-title">Weekly History (Daily Avg)</div>
+      <div class="section-title">Ιστορικό Εβδομάδων (Ημερήσιος Μ.Ο.)</div>
       <div class="history-list" id="historyList">
-        <div class="empty-state">No completed weeks yet</div>
+        <div class="empty-state">Δεν υπάρχουν ολοκληρωμένες εβδομάδες</div>
       </div>
     </div>
   </div>
@@ -769,25 +771,35 @@
     <div class="modal-sheet">
       <div class="modal-drag-handle"></div>
       <div class="modal-header">
-        <div class="modal-title">Log Session</div>
-        <button class="modal-close" onclick="closeModal('modalManualEntry')" aria-label="Close">
+        <div class="modal-title">Καταγραφή Συνεδρίας</div>
+        <button class="modal-close" onclick="closeModal('modalManualEntry')" aria-label="Κλείσιμο">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
         </button>
       </div>
-      <div class="modal-form">
+      <form class="modal-form" onsubmit="event.preventDefault(); submitManualEntry();">
         <div class="input-group">
-          <label class="input-label">Duration (Minutes)</label>
-          <input type="number" step="0.5" min="0.5" id="manualMinutesInput" class="input-field" placeholder="e.g. 15 or 10.5" inputmode="decimal">
+          <label class="input-label" for="manualMinutesInput">Διάρκεια (Λεπτά)</label>
+          <!-- Αλλαγή σε type="text" & inputmode="decimal" για πλήρη υποστήριξη ελληνικού κόμματος (π.χ. 2,5) -->
+          <input 
+            type="text" 
+            inputmode="decimal" 
+            id="manualMinutesInput" 
+            class="input-field" 
+            placeholder="π.χ. 15 ή 2,5" 
+            autocomplete="off"
+            autocapitalize="off"
+            spellcheck="false"
+          >
         </div>
         <div class="input-group">
-          <label class="input-label">Date</label>
+          <label class="input-label" for="manualDateInput">Ημερομηνία</label>
           <input type="date" id="manualDateInput" class="input-field">
         </div>
-        <button class="modal-btn-submit" onclick="submitManualEntry()">Save Session</button>
-      </div>
+        <button type="submit" class="modal-btn-submit">Αποθήκευση Συνεδρίας</button>
+      </form>
     </div>
   </div>
 
@@ -796,8 +808,8 @@
     <div class="modal-sheet">
       <div class="modal-drag-handle"></div>
       <div class="modal-header">
-        <div class="modal-title">Today's Sessions</div>
-        <button class="modal-close" onclick="closeModal('modalManageSessions')" aria-label="Close">
+        <div class="modal-title">Σημερινές Συνεδρίες</div>
+        <button class="modal-close" onclick="closeModal('modalManageSessions')" aria-label="Κλείσιμο">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -812,7 +824,6 @@
     const STORAGE_KEY = 'zen_meditation_sessions_v1';
     const TIMER_PREF_KEY = 'zen_meditation_last_timer_sec';
 
-    /* Reusable SVG Templates for Play / Pause */
     const ICON_PLAY = `<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" style="transform: translateX(1.5px);"><polygon points="6 4 20 12 6 20"></polygon></svg>`;
     const ICON_PAUSE = `<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><rect x="6" y="4" width="3.8" height="16" rx="1.5"></rect><rect x="14.2" y="4" width="3.8" height="16" rx="1.5"></rect></svg>`;
 
@@ -823,8 +834,11 @@
     let timerDurationSeconds = (!isNaN(savedDuration) && savedDuration >= 60) ? savedDuration : (10 * 60);
 
     let elapsedSeconds = 0;
+    let timerStartTimestamp = 0;
+    let baseElapsedAtStart = 0;
     let intervalId = null;
     let wakeLock = null;
+    let audioCtx = null;
 
     const ringRadius = 105;
     const ringCircumference = 2 * Math.PI * ringRadius;
@@ -843,12 +857,27 @@
     progressRing.style.strokeDasharray = `${ringCircumference} ${ringCircumference}`;
     progressRing.style.strokeDashoffset = '0';
 
-    /* Audio Synthesizers */
+    /* Audio Context Helper */
+    function getAudioContext() {
+      try {
+        const AudioCtxClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtxClass) return null;
+        if (!audioCtx) {
+          audioCtx = new AudioCtxClass();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        return audioCtx;
+      } catch (e) {
+        return null;
+      }
+    }
+
     function playIPhoneTimerChime() {
       try {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        if (!AudioContext) return;
-        const ctx = new AudioContext();
+        const ctx = getAudioContext();
+        if (!ctx) return;
         const notes = [1046.50, 1318.51, 1567.98, 2093.00];
         
         notes.forEach((freq, idx) => {
@@ -877,9 +906,8 @@
 
     function playZenBell() {
       try {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        if (!AudioContext) return;
-        const ctx = new AudioContext();
+        const ctx = getAudioContext();
+        if (!ctx) return;
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
 
@@ -902,7 +930,7 @@
 
     async function requestWakeLock() {
       try {
-        if ('wakeLock' in navigator) {
+        if ('wakeLock' in navigator && !wakeLock) {
           wakeLock = await navigator.wakeLock.request('screen');
         }
       } catch (err) {}
@@ -910,10 +938,17 @@
 
     function releaseWakeLock() {
       if (wakeLock) {
-        wakeLock.release();
+        wakeLock.release().catch(() => {});
         wakeLock = null;
       }
     }
+
+    // Επαναφορά WakeLock σε περίπτωση επιστροφής στην εφαρμογή
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && isRunning) {
+        requestWakeLock();
+      }
+    });
 
     function getTodayDateString(d = new Date()) {
       const year = d.getFullYear();
@@ -922,8 +957,13 @@
       return `${year}-${month}-${day}`;
     }
 
+    function parseLocalDate(dateStr) {
+      const parts = dateStr.split('-');
+      return new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+    }
+
     function getMondayOfWeek(d) {
-      const date = new Date(d);
+      const date = new Date(d.getFullYear(), d.getMonth(), d.getDate());
       const day = date.getDay();
       const diff = date.getDate() - day + (day === 0 ? -6 : 1);
       date.setDate(diff);
@@ -932,7 +972,7 @@
     }
 
     function formatShortDate(d) {
-      return `${d.getMonth() + 1}/${d.getDate()}`;
+      return `${d.getDate()}/${d.getMonth() + 1}`;
     }
 
     function getSessions() {
@@ -944,13 +984,14 @@
     }
 
     function saveSessionRecord(minutes, dateStr = null) {
-      if (minutes <= 0) return;
+      const cleanMins = Number(minutes);
+      if (isNaN(cleanMins) || cleanMins <= 0) return;
       const sessions = getSessions();
       sessions.push({
         id: Date.now() + Math.random(),
         date: dateStr || getTodayDateString(),
         timeStr: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        minutes: Number(minutes)
+        minutes: cleanMins
       });
       localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions));
       renderDashboard();
@@ -972,8 +1013,12 @@
       return Math.floor((totalMinutes / 7) * 10) / 10;
     }
 
+    /* Άμεση αλλαγή Mode χωρίς καθυστερήσεις στα κουμπιά */
     function switchMode(mode) {
-      if (isRunning) resetCurrentSession();
+      if (currentMode === mode && !isRunning) return;
+
+      // Πλήρης επαναφορά ώστε να μην μεταφέρονται δεδομένα ή καταστάσεις κουμπιών
+      resetCurrentSession();
       currentMode = mode;
       
       document.getElementById('btnModeStopwatch').classList.toggle('active', mode === 'stopwatch');
@@ -988,7 +1033,12 @@
         btnSave.classList.remove('hidden-slot');
       }
 
+      // Στιγμιαίος συγχρονισμός χωρίς οπτικό lag στον κύκλο
+      progressRing.style.transition = 'none';
       updateDisplay();
+      requestAnimationFrame(() => {
+        progressRing.style.transition = 'stroke-dashoffset 0.2s linear';
+      });
     }
 
     function adjustTimerDuration(deltaMinutes) {
@@ -1004,21 +1054,28 @@
       updateDisplay();
     }
 
-    /* Stepper with Hold-To-Repeat Acceleration */
     function setupHoldButton(btn, delta) {
       let holdTimeout = null;
       let holdInterval = null;
       let tickCount = 0;
+      let isTouch = false;
 
       const trigger = () => {
         tickCount++;
-        // Accelerate if held down for more than 7 ticks
         const currentDelta = tickCount > 7 ? delta * 5 : delta;
         adjustTimerDuration(currentDelta);
       };
 
       const startHold = (e) => {
-        if (e.type === 'touchstart') e.preventDefault();
+        if (e.type === 'touchstart') {
+          isTouch = true;
+        } else if (isTouch && e.type === 'mousedown') {
+          return;
+        }
+        if (e.cancelable && e.type === 'touchstart') {
+          e.preventDefault();
+        }
+
         adjustTimerDuration(delta);
         tickCount = 0;
 
@@ -1027,12 +1084,15 @@
         }, 320);
       };
 
-      const clearHold = () => {
+      const clearHold = (e) => {
         if (holdTimeout) clearTimeout(holdTimeout);
         if (holdInterval) clearInterval(holdInterval);
         holdTimeout = null;
         holdInterval = null;
         tickCount = 0;
+        if (e.type === 'touchend') {
+          setTimeout(() => { isTouch = false; }, 300);
+        }
       };
 
       btn.addEventListener('mousedown', startHold);
@@ -1045,6 +1105,7 @@
     }
 
     function toggleSession() {
+      getAudioContext(); // Προετοιμασία ήχου στο πρώτο πάτημα
       if (isRunning) {
         pauseSession();
       } else {
@@ -1056,21 +1117,30 @@
       isRunning = true;
       btnToggle.innerHTML = ICON_PAUSE;
       btnReset.disabled = false;
-      btnSave.disabled = false;
+      if (currentMode === 'stopwatch') {
+        btnSave.disabled = false;
+      }
       requestWakeLock();
 
+      timerStartTimestamp = performance.now();
+      baseElapsedAtStart = elapsedSeconds;
+
+      clearInterval(intervalId);
+      // Συχνότερος έλεγχος (250ms) με timestamps για απόλυτη ακρίβεια
       intervalId = setInterval(() => {
-        if (currentMode === 'stopwatch') {
-          elapsedSeconds++;
-          updateDisplay();
-        } else {
-          elapsedSeconds++;
-          updateDisplay();
+        const deltaSeconds = Math.floor((performance.now() - timerStartTimestamp) / 1000);
+        elapsedSeconds = baseElapsedAtStart + deltaSeconds;
+
+        if (currentMode === 'timer') {
           if (elapsedSeconds >= timerDurationSeconds) {
+            elapsedSeconds = timerDurationSeconds;
+            updateDisplay();
             finishTimer();
+            return;
           }
         }
-      }, 1000);
+        updateDisplay();
+      }, 250);
     }
 
     function pauseSession() {
@@ -1083,6 +1153,7 @@
     function resetCurrentSession() {
       pauseSession();
       elapsedSeconds = 0;
+      baseElapsedAtStart = 0;
       btnReset.disabled = true;
       btnSave.disabled = true;
       updateDisplay();
@@ -1100,7 +1171,7 @@
     function finishTimer() {
       pauseSession();
       playIPhoneTimerChime();
-      const mins = timerDurationSeconds / 60;
+      const mins = Math.round((timerDurationSeconds / 60) * 10) / 10;
       saveSessionRecord(mins);
       resetCurrentSession();
     }
@@ -1117,7 +1188,7 @@
         const m = Math.floor(remaining / 60);
         const s = remaining % 60;
         timeDisplay.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-        const progress = elapsedSeconds / timerDurationSeconds;
+        const progress = Math.min(1, elapsedSeconds / timerDurationSeconds);
         progressRing.style.strokeDashoffset = ringCircumference * (1 - progress);
       }
     }
@@ -1148,7 +1219,7 @@
       const pastWeeksMap = {};
 
       sessions.forEach(s => {
-        const sDate = new Date(s.date + 'T00:00:00');
+        const sDate = parseLocalDate(s.date);
         const sMonday = getMondayOfWeek(sDate);
         const sMondayStr = getTodayDateString(sMonday);
 
@@ -1166,7 +1237,7 @@
       const sortedWeeks = Object.values(pastWeeksMap).sort((a, b) => b.monday - a.monday);
 
       if (sortedWeeks.length === 0) {
-        historyList.innerHTML = `<div class="empty-state">No completed weeks yet</div>`;
+        historyList.innerHTML = `<div class="empty-state">Δεν υπάρχουν ολοκληρωμένες εβδομάδες</div>`;
       } else {
         historyList.innerHTML = sortedWeeks.map(item => {
           const sun = new Date(item.monday);
@@ -1175,7 +1246,7 @@
           return `
             <div class="history-row">
               <span class="history-date">${formatShortDate(item.monday)} - ${formatShortDate(sun)}</span>
-              <span class="history-avg">${avg.toFixed(1)} min/day</span>
+              <span class="history-avg">${avg.toFixed(1)} min/ημ</span>
             </div>
           `;
         }).join('');
@@ -1196,19 +1267,39 @@
       }
     }
 
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeModal('modalManualEntry');
+        closeModal('modalManageSessions');
+      }
+    });
+
     function openManualEntryModal() {
+      const minutesInput = document.getElementById('manualMinutesInput');
       document.getElementById('manualDateInput').value = getTodayDateString();
-      document.getElementById('manualMinutesInput').value = '';
+      minutesInput.value = '';
       openModal('modalManualEntry');
-      setTimeout(() => document.getElementById('manualMinutesInput').focus(), 150);
+      setTimeout(() => minutesInput.focus(), 150);
     }
 
+    /* Διόρθωση: Αποδοχή κόμματος (2,5) και τελείας (2.5) */
     function submitManualEntry() {
-      const val = parseFloat(document.getElementById('manualMinutesInput').value);
+      const inputEl = document.getElementById('manualMinutesInput');
+      const rawText = inputEl.value.trim();
+      
+      // Αντικατάσταση ελληνικού κόμματος με τελεία
+      const normalizedText = rawText.replace(',', '.');
+      const val = parseFloat(normalizedText);
       const dateVal = document.getElementById('manualDateInput').value;
-      if (val && val > 0) {
-        saveSessionRecord(val, dateVal || getTodayDateString());
+
+      if (!isNaN(val) && val > 0 && isFinite(val)) {
+        saveSessionRecord(Number(val.toFixed(2)), dateVal || getTodayDateString());
         closeModal('modalManualEntry');
+      } else {
+        inputEl.style.borderColor = 'var(--danger)';
+        setTimeout(() => {
+          inputEl.style.borderColor = '';
+        }, 1200);
       }
     }
 
@@ -1224,7 +1315,7 @@
       const todaySessions = sessions.filter(s => s.date === todayStr).reverse();
 
       if (todaySessions.length === 0) {
-        container.innerHTML = `<div class="empty-state">No recorded sessions for today yet.</div>`;
+        container.innerHTML = `<div class="empty-state">Δεν υπάρχουν καταγεγραμμένες συνεδρίες για σήμερα.</div>`;
         return;
       }
 
@@ -1232,9 +1323,9 @@
         <div class="session-item">
           <div class="session-item-info">
             <span class="session-item-mins">${s.minutes.toFixed(1)} min</span>
-            <span class="session-item-time">${s.timeStr ? 'Time: ' + s.timeStr : 'Manual log'}</span>
+            <span class="session-item-time">${s.timeStr ? 'Ώρα: ' + s.timeStr : 'Χειροκίνητη'}</span>
           </div>
-          <button class="btn-delete-session" onclick="deleteSession(${s.id})" title="Delete" aria-label="Delete session">
+          <button class="btn-delete-session" onclick="deleteSession(${s.id})" title="Διαγραφή" aria-label="Διαγραφή συνεδρίας">
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -1244,18 +1335,16 @@
       `).join('');
     }
 
-    /* Stable Service Worker Registration */
+    /* Service Worker Registration */
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
-          .then((reg) => {
-            reg.update();
-          })
+          .then((reg) => reg.update())
           .catch((err) => console.error('SW Error:', err));
       });
     }
 
-    // Initialize UI & Event Listeners
+    // Εκκίνηση UI & Listeners
     setupHoldButton(document.getElementById('stepperDec'), -1);
     setupHoldButton(document.getElementById('stepperInc'), 1);
     stepperDurationLabel.textContent = `${Math.round(timerDurationSeconds / 60)}`;
