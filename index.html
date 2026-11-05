@@ -16,14 +16,16 @@
   <style>
     :root {
       --bg: #0a0a0c;
-      --card-bg: #141418;
-      --card-border: rgba(255, 255, 255, 0.07);
+      --card-bg: rgba(20, 20, 25, 0.65);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-border-highlight: rgba(255, 255, 255, 0.14);
       --accent: #d4a373;
-      --accent-dim: rgba(212, 163, 115, 0.15);
+      --accent-dim: rgba(212, 163, 115, 0.16);
+      --accent-glow: rgba(212, 163, 115, 0.28);
       --text-main: #f4f4f5;
-      --text-muted: #8b8b94;
+      --text-muted: #8e8e98;
       --danger: #ef4444;
-      --danger-dim: rgba(239, 68, 68, 0.15);
+      --danger-dim: rgba(239, 68, 68, 0.16);
       --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
     }
 
@@ -40,6 +42,7 @@
       height: 100dvh;
       overflow: hidden;
       background-color: var(--bg);
+      background-image: radial-gradient(circle at 50% 12%, rgba(212, 163, 115, 0.07) 0%, transparent 65%);
     }
 
     body {
@@ -72,7 +75,7 @@
 
     .app-title {
       font-size: 1.15rem;
-      letter-spacing: 0.38em;
+      letter-spacing: 0.4em;
       text-transform: uppercase;
       color: var(--accent);
       font-weight: 600;
@@ -80,26 +83,28 @@
     }
 
     .btn-header-action {
-      background: var(--card-bg);
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border: 1px solid var(--card-border);
       color: var(--text-main);
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.25rem;
-      transition: background 0.2s, transform 0.1s;
+      transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
     .btn-header-action:active {
       transform: scale(0.92);
       background: var(--accent-dim);
+      color: var(--accent);
     }
 
-    /* Anchored Upper Stage with comfortable spacing */
+    /* Anchored Upper Stage */
     .top-interactive-stage {
       display: flex;
       flex-direction: column;
@@ -114,12 +119,15 @@
     /* Mode Switcher */
     .mode-nav {
       display: flex;
-      background: var(--card-bg);
+      background: rgba(20, 20, 26, 0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--card-border);
       border-radius: 999px;
       padding: 4px;
       width: 100%;
       max-width: 290px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
     }
 
     .mode-btn {
@@ -132,13 +140,14 @@
       font-weight: 500;
       border-radius: 999px;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.22s ease;
     }
 
     .mode-btn.active {
       background: var(--accent);
       color: #0a0a0c;
       font-weight: 600;
+      box-shadow: 0 2px 10px rgba(212, 163, 115, 0.35);
     }
 
     /* Central Dial */
@@ -159,7 +168,7 @@
     }
 
     .progress-ring-bg {
-      stroke: var(--card-border);
+      stroke: rgba(255, 255, 255, 0.05);
       stroke-width: 4;
       fill: transparent;
     }
@@ -190,9 +199,9 @@
       line-height: 1;
     }
 
-    /* Stepper */
+    /* Stepper Redesign (Option A: Minimal with hold-to-repeat) */
     .presets-container {
-      height: 40px;
+      height: 44px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -202,11 +211,15 @@
     .time-stepper {
       display: flex;
       align-items: center;
-      gap: 12px;
-      background: var(--card-bg);
+      justify-content: space-between;
+      gap: 16px;
+      background: rgba(20, 20, 26, 0.7);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border: 1px solid var(--card-border);
       border-radius: 999px;
-      padding: 4px 8px;
+      padding: 4px 6px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
     }
 
     .time-stepper.hidden {
@@ -214,36 +227,52 @@
       pointer-events: none;
     }
 
-    .stepper-btn {
-      background: rgba(255, 255, 255, 0.05);
+    .stepper-btn-circle {
+      background: rgba(255, 255, 255, 0.06);
       border: 1px solid var(--card-border);
       color: var(--text-main);
-      font-size: 0.74rem;
-      font-weight: 600;
-      padding: 5px 10px;
-      border-radius: 999px;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
       cursor: pointer;
-      transition: background 0.15s, transform 0.1s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+      touch-action: none;
     }
 
-    .stepper-btn:active {
+    .stepper-btn-circle:active {
       background: var(--accent-dim);
       color: var(--accent);
-      transform: scale(0.92);
+      transform: scale(0.9);
+      border-color: rgba(212, 163, 115, 0.3);
+    }
+
+    .stepper-center {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 3px;
+      min-width: 66px;
     }
 
     .stepper-label {
-      font-size: 0.84rem;
-      font-weight: 500;
+      font-size: 1rem;
+      font-weight: 600;
       color: var(--accent);
-      min-width: 54px;
-      text-align: center;
       font-variant-numeric: tabular-nums;
+    }
+
+    .stepper-unit {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 500;
     }
 
     /* Controls */
     .controls-container {
-      height: 60px;
+      height: 64px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -252,7 +281,7 @@
 
     .controls {
       display: flex;
-      gap: 20px;
+      gap: 22px;
       justify-content: center;
       align-items: center;
     }
@@ -261,40 +290,50 @@
       background: var(--accent);
       color: #0a0a0c;
       border: none;
-      width: 60px;
-      height: 60px;
+      width: 64px;
+      height: 64px;
       border-radius: 50%;
-      font-size: 1.15rem;
-      font-weight: 600;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 20px rgba(212, 163, 115, 0.25);
-      transition: transform 0.15s, opacity 0.15s;
+      box-shadow: 0 8px 24px var(--accent-glow);
+      transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.15s ease;
     }
 
     .btn-action:active {
-      transform: scale(0.94);
+      transform: scale(0.92);
+      box-shadow: 0 4px 14px var(--accent-glow);
     }
 
     .btn-secondary {
-      background: var(--card-bg);
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border: 1px solid var(--card-border);
       color: var(--text-muted);
       width: 44px;
       height: 44px;
       border-radius: 50%;
       cursor: pointer;
-      font-size: 0.95rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.2s;
+      transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      color: var(--text-main);
+      border-color: var(--card-border-highlight);
+    }
+
+    .btn-secondary:active:not(:disabled) {
+      transform: scale(0.92);
+      background: rgba(255, 255, 255, 0.1);
     }
 
     .btn-secondary:disabled {
-      opacity: 0.25;
+      opacity: 0.22;
       cursor: not-allowed;
     }
 
@@ -303,7 +342,7 @@
       pointer-events: none;
     }
 
-    /* Dashboard Metrics */
+    /* Dashboard Metrics (Glassmorphism Cards) */
     .dashboard {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -314,10 +353,14 @@
 
     .card {
       background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 1.05rem 1.15rem;
+      border-radius: 18px;
+      padding: 1.1rem 1.2rem;
       position: relative;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22);
+      transition: border-color 0.2s, background 0.2s;
     }
 
     .card.clickable {
@@ -325,7 +368,8 @@
     }
 
     .card.clickable:active {
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(255, 255, 255, 0.04);
+      border-color: var(--card-border-highlight);
     }
 
     .card-label {
@@ -340,20 +384,23 @@
     }
 
     .card-label-hint {
-      font-size: 0.65rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 0.68rem;
       color: var(--accent);
       text-transform: none;
       letter-spacing: 0;
     }
 
     .card-val {
-      font-size: 1.68rem;
+      font-size: 1.7rem;
       font-weight: 500;
       color: var(--text-main);
     }
 
     .card-unit {
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       font-weight: 400;
       color: var(--text-muted);
       margin-left: 4px;
@@ -388,9 +435,11 @@
 
     .history-row {
       background: var(--card-bg);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border: 1px solid var(--card-border);
-      padding: 11px 15px;
-      border-radius: 13px;
+      padding: 12px 16px;
+      border-radius: 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -411,23 +460,23 @@
       text-align: center;
       color: var(--text-muted);
       font-size: 0.82rem;
-      padding: 1rem 0;
+      padding: 1.2rem 0;
     }
 
-    /* Modals */
+    /* Modals & Ergonomic Bottom Sheets */
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.72);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       display: flex;
       align-items: flex-end;
       justify-content: center;
       z-index: 100;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.25s ease;
+      transition: opacity 0.26s ease;
     }
 
     .modal-backdrop.open {
@@ -436,22 +485,34 @@
     }
 
     .modal-sheet {
-      background: #18181d;
-      border: 1px solid var(--card-border);
+      background: rgba(22, 22, 28, 0.88);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid var(--card-border-highlight);
       border-bottom: none;
-      border-radius: 24px 24px 0 0;
+      border-radius: 26px 26px 0 0;
       width: 100%;
       max-width: 480px;
-      padding: 1.4rem 1.4rem calc(1.4rem + env(safe-area-inset-bottom, 20px));
+      padding: 0.75rem 1.4rem calc(1.4rem + env(safe-area-inset-bottom, 20px));
       transform: translateY(100%);
       transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
       max-height: 85vh;
       display: flex;
       flex-direction: column;
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.6);
     }
 
     .modal-backdrop.open .modal-sheet {
       transform: translateY(0);
+    }
+
+    .modal-drag-handle {
+      width: 38px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 999px;
+      margin: 0 auto 0.9rem;
+      flex-shrink: 0;
     }
 
     .modal-header {
@@ -462,25 +523,35 @@
     }
 
     .modal-title {
-      font-size: 1.1rem;
+      font-size: 1.12rem;
       font-weight: 500;
       color: var(--text-main);
     }
 
     .modal-close {
-      background: transparent;
-      border: none;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
       color: var(--text-muted);
-      font-size: 1.4rem;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
       cursor: pointer;
-      line-height: 1;
-      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+
+    .modal-close:active {
+      transform: scale(0.92);
+      background: rgba(255, 255, 255, 0.12);
+      color: var(--text-main);
     }
 
     .modal-form {
       display: flex;
       flex-direction: column;
-      gap: 1rem;
+      gap: 1.1rem;
     }
 
     .input-group {
@@ -490,26 +561,30 @@
     }
 
     .input-label {
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       text-transform: uppercase;
       letter-spacing: 0.08em;
       color: var(--text-muted);
+      padding-left: 2px;
     }
 
     .input-field {
-      background: var(--card-bg);
+      background: rgba(255, 255, 255, 0.04);
       border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 13px;
+      border-radius: 14px;
+      padding: 14px 16px;
       font-size: 1.05rem;
       color: var(--text-main);
       font-family: inherit;
       outline: none;
       -webkit-appearance: none;
+      transition: all 0.2s ease;
     }
 
     .input-field:focus {
+      background: rgba(255, 255, 255, 0.07);
       border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.18);
     }
 
     .modal-btn-submit {
@@ -522,11 +597,13 @@
       font-weight: 600;
       cursor: pointer;
       margin-top: 0.4rem;
-      transition: opacity 0.2s;
+      box-shadow: 0 4px 16px var(--accent-glow);
+      transition: transform 0.15s ease, opacity 0.15s ease;
     }
 
     .modal-btn-submit:active {
-      opacity: 0.85;
+      transform: scale(0.98);
+      opacity: 0.9;
     }
 
     .session-items-scroll {
@@ -541,9 +618,11 @@
 
     .session-item {
       background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border: 1px solid var(--card-border);
       padding: 12px 14px;
-      border-radius: 12px;
+      border-radius: 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -568,7 +647,7 @@
 
     .btn-delete-session {
       background: var(--danger-dim);
-      border: 1px solid rgba(239, 68, 68, 0.3);
+      border: 1px solid rgba(239, 68, 68, 0.25);
       color: var(--danger);
       width: 32px;
       height: 32px;
@@ -577,7 +656,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.85rem;
+      transition: transform 0.15s ease;
+    }
+
+    .btn-delete-session:active {
+      transform: scale(0.9);
+      background: rgba(239, 68, 68, 0.25);
     }
   </style>
 </head>
@@ -586,7 +670,12 @@
   <div class="app-wrapper">
     <header>
       <div class="app-title">ZEN</div>
-      <button class="btn-header-action" onclick="openManualEntryModal()" title="Manual Log">+</button>
+      <button class="btn-header-action" onclick="openManualEntryModal()" title="Manual Log" aria-label="Manual Log">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+      </button>
     </header>
 
     <div class="top-interactive-stage">
@@ -607,19 +696,42 @@
 
       <div class="presets-container">
         <div class="time-stepper hidden" id="stepperRow">
-          <button class="stepper-btn" onclick="adjustTimerDuration(-5)">-5 min</button>
-          <button class="stepper-btn" onclick="adjustTimerDuration(-1)">-1 min</button>
-          <span class="stepper-label" id="stepperDurationLabel">10 min</span>
-          <button class="stepper-btn" onclick="adjustTimerDuration(1)">+1 min</button>
-          <button class="stepper-btn" onclick="adjustTimerDuration(5)">+5 min</button>
+          <button class="stepper-btn-circle" id="stepperDec" aria-label="Decrease time">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+          </button>
+          <div class="stepper-center">
+            <span class="stepper-label" id="stepperDurationLabel">10</span>
+            <span class="stepper-unit">min</span>
+          </div>
+          <button class="stepper-btn-circle" id="stepperInc" aria-label="Increase time">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+          </button>
         </div>
       </div>
 
       <div class="controls-container">
         <div class="controls">
-          <button class="btn-secondary" id="btnReset" onclick="resetCurrentSession()" title="Reset" disabled>✕</button>
-          <button class="btn-action" id="btnToggle" onclick="toggleSession()">▶</button>
-          <button class="btn-secondary" id="btnSave" onclick="manualSaveStopwatch()" title="Finish" disabled>✓</button>
+          <button class="btn-secondary" id="btnReset" onclick="resetCurrentSession()" title="Reset" aria-label="Reset" disabled>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+          <button class="btn-action" id="btnToggle" onclick="toggleSession()" title="Start / Pause" aria-label="Start">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" style="transform: translateX(1.5px);">
+              <polygon points="6 4 20 12 6 20"></polygon>
+            </svg>
+          </button>
+          <button class="btn-secondary" id="btnSave" onclick="manualSaveStopwatch()" title="Finish" aria-label="Save" disabled>
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </button>
         </div>
       </div>
     </div>
@@ -628,7 +740,13 @@
       <div class="card clickable" onclick="openManageSessionsModal()" title="View today's sessions">
         <div class="card-label">
           <span>Today</span>
-          <span class="card-label-hint">View ↗</span>
+          <span class="card-label-hint">
+            View
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="7" y1="17" x2="17" y2="7"></line>
+              <polyline points="7 7 17 7 17 17"></polyline>
+            </svg>
+          </span>
         </div>
         <div class="card-val"><span id="metricToday">0.0</span><span class="card-unit">min</span></div>
       </div>
@@ -649,9 +767,15 @@
   <!-- Modal 1: Manual Session Entry -->
   <div class="modal-backdrop" id="modalManualEntry" onclick="onBackdropClick(event, 'modalManualEntry')">
     <div class="modal-sheet">
+      <div class="modal-drag-handle"></div>
       <div class="modal-header">
         <div class="modal-title">Log Session</div>
-        <button class="modal-close" onclick="closeModal('modalManualEntry')">×</button>
+        <button class="modal-close" onclick="closeModal('modalManualEntry')" aria-label="Close">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
       </div>
       <div class="modal-form">
         <div class="input-group">
@@ -670,9 +794,15 @@
   <!-- Modal 2: View & Delete Today's Sessions -->
   <div class="modal-backdrop" id="modalManageSessions" onclick="onBackdropClick(event, 'modalManageSessions')">
     <div class="modal-sheet">
+      <div class="modal-drag-handle"></div>
       <div class="modal-header">
         <div class="modal-title">Today's Sessions</div>
-        <button class="modal-close" onclick="closeModal('modalManageSessions')">×</button>
+        <button class="modal-close" onclick="closeModal('modalManageSessions')" aria-label="Close">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
       </div>
       <div class="session-items-scroll" id="sessionItemsContainer"></div>
     </div>
@@ -682,10 +812,13 @@
     const STORAGE_KEY = 'zen_meditation_sessions_v1';
     const TIMER_PREF_KEY = 'zen_meditation_last_timer_sec';
 
+    /* Reusable SVG Templates for Play / Pause */
+    const ICON_PLAY = `<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" style="transform: translateX(1.5px);"><polygon points="6 4 20 12 6 20"></polygon></svg>`;
+    const ICON_PAUSE = `<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><rect x="6" y="4" width="3.8" height="16" rx="1.5"></rect><rect x="14.2" y="4" width="3.8" height="16" rx="1.5"></rect></svg>`;
+
     let currentMode = 'stopwatch';
     let isRunning = false;
     
-    // Remember last used timer duration, defaulting to 10 minutes
     let savedDuration = parseInt(localStorage.getItem(TIMER_PREF_KEY), 10);
     let timerDurationSeconds = (!isNaN(savedDuration) && savedDuration >= 60) ? savedDuration : (10 * 60);
 
@@ -849,7 +982,7 @@
       if (mode === 'timer') {
         stepperRow.classList.remove('hidden');
         btnSave.classList.add('hidden-slot');
-        stepperDurationLabel.textContent = `${Math.round(timerDurationSeconds / 60)} min`;
+        stepperDurationLabel.textContent = `${Math.round(timerDurationSeconds / 60)}`;
       } else {
         stepperRow.classList.add('hidden');
         btnSave.classList.remove('hidden-slot');
@@ -867,8 +1000,48 @@
 
       timerDurationSeconds = updatedMins * 60;
       localStorage.setItem(TIMER_PREF_KEY, timerDurationSeconds.toString());
-      stepperDurationLabel.textContent = `${updatedMins} min`;
+      stepperDurationLabel.textContent = `${updatedMins}`;
       updateDisplay();
+    }
+
+    /* Stepper with Hold-To-Repeat Acceleration */
+    function setupHoldButton(btn, delta) {
+      let holdTimeout = null;
+      let holdInterval = null;
+      let tickCount = 0;
+
+      const trigger = () => {
+        tickCount++;
+        // Accelerate if held down for more than 7 ticks
+        const currentDelta = tickCount > 7 ? delta * 5 : delta;
+        adjustTimerDuration(currentDelta);
+      };
+
+      const startHold = (e) => {
+        if (e.type === 'touchstart') e.preventDefault();
+        adjustTimerDuration(delta);
+        tickCount = 0;
+
+        holdTimeout = setTimeout(() => {
+          holdInterval = setInterval(trigger, 110);
+        }, 320);
+      };
+
+      const clearHold = () => {
+        if (holdTimeout) clearTimeout(holdTimeout);
+        if (holdInterval) clearInterval(holdInterval);
+        holdTimeout = null;
+        holdInterval = null;
+        tickCount = 0;
+      };
+
+      btn.addEventListener('mousedown', startHold);
+      btn.addEventListener('touchstart', startHold, { passive: false });
+
+      btn.addEventListener('mouseup', clearHold);
+      btn.addEventListener('mouseleave', clearHold);
+      btn.addEventListener('touchend', clearHold);
+      btn.addEventListener('touchcancel', clearHold);
     }
 
     function toggleSession() {
@@ -881,7 +1054,7 @@
 
     function startSession() {
       isRunning = true;
-      btnToggle.textContent = '❚❚';
+      btnToggle.innerHTML = ICON_PAUSE;
       btnReset.disabled = false;
       btnSave.disabled = false;
       requestWakeLock();
@@ -902,7 +1075,7 @@
 
     function pauseSession() {
       isRunning = false;
-      btnToggle.textContent = '▶';
+      btnToggle.innerHTML = ICON_PLAY;
       clearInterval(intervalId);
       releaseWakeLock();
     }
@@ -1061,12 +1234,17 @@
             <span class="session-item-mins">${s.minutes.toFixed(1)} min</span>
             <span class="session-item-time">${s.timeStr ? 'Time: ' + s.timeStr : 'Manual log'}</span>
           </div>
-          <button class="btn-delete-session" onclick="deleteSession(${s.id})" title="Delete">✕</button>
+          <button class="btn-delete-session" onclick="deleteSession(${s.id})" title="Delete" aria-label="Delete session">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
         </div>
       `).join('');
     }
 
-    /* Stable Service Worker Registration without reload loops */
+    /* Stable Service Worker Registration */
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
@@ -1077,8 +1255,10 @@
       });
     }
 
-    // Initialize UI
-    stepperDurationLabel.textContent = `${Math.round(timerDurationSeconds / 60)} min`;
+    // Initialize UI & Event Listeners
+    setupHoldButton(document.getElementById('stepperDec'), -1);
+    setupHoldButton(document.getElementById('stepperInc'), 1);
+    stepperDurationLabel.textContent = `${Math.round(timerDurationSeconds / 60)}`;
     switchMode('stopwatch');
     renderDashboard();
   </script>
