@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Zen Meditation</title>
+
+  <!-- PWA & Mobile Web App Meta -->
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#0a0a0c">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Zen">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%230a0a0c'/%3E%3Ccircle cx='256' cy='256' r='140' stroke='%23d4a373' stroke-width='16' fill='none'/%3E%3Ccircle cx='256' cy='256' r='20' fill='%23d4a373'/%3E%3C/svg%3E">
+
+  <style>
+    :root {
+      --bg: #0a0a0c;
+      --card-bg: #141418;
+      --card-border: rgba(255, 255, 255, 0.06);
+      --accent: #d4a373;
+      --accent-dim: rgba(212, 163, 115, 0.15);
+      --text-main: #f4f4f5;
+      --text-muted: #8b8b94;
+      --danger: #ef4444;
+      --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font);
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      padding: env(safe-area-inset-top, 20px) 1.25rem env(safe-area-inset-bottom, 20px);
+      overflow-x: hidden;
+    }
+
+    header {
+      padding: 1.2rem 0 0.8rem;
+      text-align: center;
+    }
+
+    .app-title {
+      font-size: 1.1rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 500;
+      opacity: 0.9;
+    }
+
+    /* Mode Switcher */
+    .mode-nav {
+      display: flex;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 999px;
+      padding: 4px;
+      margin: 1.2rem auto;
+      max-width: 320px;
+      width: 100%;
+    }
+
+    .mode-btn {
+      flex: 1;
+      padding: 8px 16px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 500;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .mode-btn.active {
+      background: var(--accent);
+      color: #0a0a0c;
+      font-weight: 600;
+    }
+
+    /* Central Timer/Stopwatch Dial */
+    .display-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 2rem 0;
+      position: relative;
+    }
+
+    .circle-wrapper {
+      position: relative;
+      width: 250px;
+      height: 250px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .progress-ring {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: rotate(-90deg);
+    }
+
+    .progress-ring-bg {
+      stroke: var(--card-border);
+      stroke-width: 4;
+      fill: transparent;
+    }
+
+    .progress-ring-circle {
+      stroke: var(--accent);
+      stroke-width: 4;
+      stroke-linecap: round;
+      fill: transparent;
+      stroke-dasharray: 754;
+      stroke-dashoffset: 0;
+      transition: stroke-dashoffset 0.3s ease;
+    }
+
+    .timer-text-wrap {
+      text-align: center;
+      z-index: 2;
+    }
+
+    .time-digits {
+      font-size: 3.5rem;
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .time-sub {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+      height: 18px;
+    }
+
+    /* Preset Chips */
+    .presets {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 6px 14px;
+      border-radius: 12px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .chip.active {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
+
+    /* Controls */
+    .controls {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .btn-action {
+      background: var(--accent);
+      color: #0a0a0c;
+      border: none;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(212, 163, 115, 0.25);
+      transition: transform 0.15s, opacity 0.15s;
+    }
+
+    .btn-action:active {
+      transform: scale(0.94);
+    }
+
+    .btn-secondary {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    /* Dashboard & Metrics */
+    .dashboard {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 2rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 1.1rem;
+    }
+
+    .card-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .card-val {
+      font-size: 1.7rem;
+      font-weight: 500;
+      color: var(--text-main);
+    }
+
+    .card-unit {
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: var(--text-muted);
+      margin-left: 3px;
+    }
+
+    /* History section */
+    .history-section {
+      margin-top: auto;
+    }
+
+    .section-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-bottom: 0.8rem;
+    }
+
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .history-row {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 12px 16px;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+    }
+
+    .history-date {
+      color: var(--text-muted);
+    }
+
+    .history-avg {
+      font-weight: 500;
+      color: var(--accent);
+    }
+
+    .empty-state {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      padding: 1.5rem 0;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="app-title">Zen Practice</div>
+  </header>
+
+  <nav class="mode-nav">
+    <button class="mode-btn active" id="btnModeStopwatch" onclick="switchMode('stopwatch')">Stopwatch</button>
+    <button class="mode-btn" id="btnModeTimer" onclick="switchMode('timer')">Timer</button>
+  </nav>
+
+  <div class="display-container">
+    <div class="circle-wrapper">
+      <svg class="progress-ring" width="250" height="250">
+        <circle class="progress-ring-bg" cx="125" cy="125" r="120" />
+        <circle class="progress-ring-circle" id="progressRing" cx="125" cy="125" r="120" />
+      </svg>
+      <div class="timer-text-wrap">
+        <div class="time-digits" id="timeDisplay">00:00</div>
+        <div class="time-sub" id="timeSub">0.0 λήξη</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="presets" id="presetRow" style="display: none;">
+    <button class="chip" onclick="setTimerMinutes(3)">3λ</button>
+    <button class="chip" onclick="setTimerMinutes(5)">5λ</button>
+    <button class="chip active" onclick="setTimerMinutes(10)">10λ</button>
+    <button class="chip" onclick="setTimerMinutes(15)">15λ</button>
+    <button class="chip" onclick="setTimerMinutes(20)">20λ</button>
+  </div>
+
+  <div class="controls">
+    <button class="btn-secondary" id="btnReset" onclick="resetCurrentSession()" title="Επαναφορά" disabled>✕</button>
+    <button class="btn-action" id="btnToggle" onclick="toggleSession()">▶</button>
+    <button class="btn-secondary" id="btnSave" onclick="manualSaveStopwatch()" title="Ολοκλήρωση" disabled>✓</button>
+  </div>
+
+  <div class="dashboard">
+    <div class="card">
+      <div class="card-label">Σήμερα</div>
+      <div class="card-val"><span id="metricToday">0.0</span><span class="card-unit">λ</span></div>
+    </div>
+    <div class="card">
+      <div class="card-label">Τρέχουσα Εβδ.</div>
+      <div class="card-val"><span id="metricWeekAvg">0.0</span><span class="card-unit">λ/ημ</span></div>
+    </div>
+  </div>
+
+  <div class="history-section">
+    <div class="section-title">Ιστορικό Εβδομάδων (Daily Avg)</div>
+    <div class="history-list" id="historyList">
+      <div class="empty-state">Δεν υπάρχουν ολοκληρωμένες εβδομάδες</div>
+    </div>
+  </div>
+
+  <script>
+    /* --- Storage Keys --- */
+    const STORAGE_KEY = 'zen_meditation_sessions_v1';
+
+    /* --- App State --- */
+    let currentMode = 'stopwatch'; // 'stopwatch' | 'timer'
+    let isRunning = false;
+    let timerDurationSeconds = 10 * 60;
+    let elapsedSeconds = 0;
+    let intervalId = null;
+    let wakeLock = null;
+
+    const ringRadius = 120;
+    const ringCircumference = 2 * Math.PI * ringRadius;
+
+    // Elements
+    const timeDisplay = document.getElementById('timeDisplay');
+    const timeSub = document.getElementById('timeSub');
+    const progressRing = document.getElementById('progressRing');
+    const btnToggle = document.getElementById('btnToggle');
+    const btnReset = document.getElementById('btnReset');
+    const btnSave = document.getElementById('btnSave');
+    const presetRow = document.getElementById('presetRow');
+    const metricToday = document.getElementById('metricToday');
+    const metricWeekAvg = document.getElementById('metricWeekAvg');
+    const historyList = document.getElementById('historyList');
+
+    progressRing.style.strokeDasharray = `${ringCircumference} ${ringCircumference}`;
+    progressRing.style.strokeDashoffset = '0';
+
+    /* --- Audio Synthesizer (Zen Bell) --- */
+    function playZenBell() {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        const ctx = new AudioContext();
+        
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(432, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(108, ctx.currentTime + 3.0);
+
+        gain.gain.setValueAtTime(0.6, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 3.0);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start();
+        osc.stop(ctx.currentTime + 3.0);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    /* --- Wake Lock --- */
+    async function requestWakeLock() {
+      try {
+        if ('wakeLock' in navigator) {
+          wakeLock = await navigator.wakeLock.request('screen');
+        }
+      } catch (err) {}
+    }
+
+    function releaseWakeLock() {
+      if (wakeLock) {
+        wakeLock.release();
+        wakeLock = null;
+      }
+    }
+
+    /* --- Date & Week Helpers --- */
+    function getTodayDateString(d = new Date()) {
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    function getMondayOfWeek(d) {
+      const date = new Date(d);
+      const day = date.getDay();
+      const diff = date.getDate() - day + (day === 0 ? -6 : 1);
+      date.setDate(diff);
+      date.setHours(0, 0, 0, 0);
+      return date;
+    }
+
+    function getWeekKey(d) {
+      const mon = getMondayOfWeek(d);
+      return getTodayDateString(mon);
+    }
+
+    function formatShortDate(d) {
+      return `${d.getDate()}/${d.getMonth() + 1}`;
+    }
+
+    /* --- Session Data Operations --- */
+    function getSessions() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveSessionRecord(minutes) {
+      if (minutes <= 0) return;
+      const sessions = getSessions();
+      sessions.push({
+        id: Date.now(),
+        date: getTodayDateString(),
+        minutes: Number(minutes)
+      });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions));
+      renderDashboard();
+    }
+
+    /* --- Calculation Rules --- */
+    // Stopwatch: round down to nearest 0.5 minute
+    function roundStopwatchMinutes(seconds) {
+      return Math.floor(seconds / 30) * 0.5;
+    }
+
+    // Weekly average: always divide by 7, truncate down to 1 decimal place
+    function calculateDailyAverageTruncated(totalMinutes) {
+      return Math.floor((totalMinutes / 7) * 10) / 10;
+    }
+
+    /* --- Mode Switching --- */
+    function switchMode(mode) {
+      if (isRunning) resetCurrentSession();
+      currentMode = mode;
+      document.getElementById('btnModeStopwatch').classList.toggle('active', mode === 'stopwatch');
+      document.getElementById('btnModeTimer').classList.toggle('active', mode === 'timer');
+      presetRow.style.display = mode === 'timer' ? 'flex' : 'none';
+      btnSave.style.display = mode === 'stopwatch' ? 'flex' : 'none';
+      updateDisplay();
+    }
+
+    function setTimerMinutes(mins) {
+      if (isRunning) resetCurrentSession();
+      timerDurationSeconds = mins * 60;
+      document.querySelectorAll('.presets .chip').forEach(c => {
+        c.classList.toggle('active', c.textContent.trim() === `${mins}λ`);
+      });
+      updateDisplay();
+    }
+
+    /* --- Timer / Stopwatch Core --- */
+    function toggleSession() {
+      if (isRunning) {
+        pauseSession();
+      } else {
+        startSession();
+      }
+    }
+
+    function startSession() {
+      isRunning = true;
+      btnToggle.textContent = '❚❚';
+      btnReset.disabled = false;
+      btnSave.disabled = false;
+      requestWakeLock();
+
+      intervalId = setInterval(() => {
+        if (currentMode === 'stopwatch') {
+          elapsedSeconds++;
+          updateDisplay();
+        } else {
+          elapsedSeconds++;
+          updateDisplay();
+          if (elapsedSeconds >= timerDurationSeconds) {
+            finishTimer();
+          }
+        }
+      }, 1000);
+    }
+
+    function pauseSession() {
+      isRunning = false;
+      btnToggle.textContent = '▶';
+      clearInterval(intervalId);
+      releaseWakeLock();
+    }
+
+    function resetCurrentSession() {
+      pauseSession();
+      elapsedSeconds = 0;
+      btnReset.disabled = true;
+      btnSave.disabled = true;
+      updateDisplay();
+    }
+
+    function manualSaveStopwatch() {
+      const minutesToRecord = roundStopwatchMinutes(elapsedSeconds);
+      if (minutesToRecord > 0) {
+        playZenBell();
+        saveSessionRecord(minutesToRecord);
+      }
+      resetCurrentSession();
+    }
+
+    function finishTimer() {
+      pauseSession();
+      playZenBell();
+      const mins = timerDurationSeconds / 60;
+      saveSessionRecord(mins);
+      resetCurrentSession();
+    }
+
+    /* --- Display Updates --- */
+    function updateDisplay() {
+      if (currentMode === 'stopwatch') {
+        const m = Math.floor(elapsedSeconds / 60);
+        const s = elapsedSeconds % 60;
+        timeDisplay.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        
+        const roundedDown = roundStopwatchMinutes(elapsedSeconds);
+        timeSub.textContent = `Καταγραφή: ${roundedDown.toFixed(1)}λ`;
+
+        const circleProgress = (elapsedSeconds % 60) / 60;
+        progressRing.style.strokeDashoffset = ringCircumference * (1 - circleProgress);
+      } else {
+        const remaining = Math.max(0, timerDurationSeconds - elapsedSeconds);
+        const m = Math.floor(remaining / 60);
+        const s = remaining % 60;
+        timeDisplay.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        timeSub.textContent = `Στόχος: ${(timerDurationSeconds / 60)}λ`;
+
+        const progress = elapsedSeconds / timerDurationSeconds;
+        progressRing.style.strokeDashoffset = ringCircumference * (1 - progress);
+      }
+    }
+
+    /* --- Metrics & History Rendering --- */
+    function renderDashboard() {
+      const sessions = getSessions();
+      const todayStr = getTodayDateString();
+      const now = new Date();
+      const currentMonday = getMondayOfWeek(now);
+      const currentMondayStr = getTodayDateString(currentMonday);
+
+      // 1. Today's total
+      const todaySum = sessions
+        .filter(s => s.date === todayStr)
+        .reduce((acc, cur) => acc + cur.minutes, 0);
+      metricToday.textContent = todaySum.toFixed(1);
+
+      // 2. Current week live average (/ 7, round down 1 decimal)
+      const currentWeekSunday = new Date(currentMonday);
+      currentWeekSunday.setDate(currentWeekSunday.getDate() + 6);
+      const currentSundayStr = getTodayDateString(currentWeekSunday);
+
+      const currentWeekSum = sessions
+        .filter(s => s.date >= currentMondayStr && s.date <= currentSundayStr)
+        .reduce((acc, cur) => acc + cur.minutes, 0);
+
+      const currentWeekAvg = calculateDailyAverageTruncated(currentWeekSum);
+      metricWeekAvg.textContent = currentWeekAvg.toFixed(1);
+
+      // 3. Past completed weeks history
+      const pastWeeksMap = {};
+
+      sessions.forEach(s => {
+        const sDate = new Date(s.date + 'T00:00:00');
+        const sMonday = getMondayOfWeek(sDate);
+        const sMondayStr = getTodayDateString(sMonday);
+
+        // Include only weeks strictly prior to current week
+        if (sMonday < currentMonday) {
+          if (!pastWeeksMap[sMondayStr]) {
+            pastWeeksMap[sMondayStr] = {
+              monday: sMonday,
+              totalMinutes: 0
+            };
+          }
+          pastWeeksMap[sMondayStr].totalMinutes += s.minutes;
+        }
+      });
+
+      const sortedWeeks = Object.values(pastWeeksMap).sort((a, b) => b.monday - a.monday);
+
+      if (sortedWeeks.length === 0) {
+        historyList.innerHTML = `<div class="empty-state">Δεν υπάρχουν ολοκληρωμένες εβδομάδες</div>`;
+      } else {
+        historyList.innerHTML = sortedWeeks.map(item => {
+          const sun = new Date(item.monday);
+          sun.setDate(sun.getDate() + 6);
+          const avg = calculateDailyAverageTruncated(item.totalMinutes);
+          return `
+            <div class="history-row">
+              <span class="history-date">${formatShortDate(item.monday)} - ${formatShortDate(sun)}</span>
+              <span class="history-avg">${avg.toFixed(1)} λ/ημ</span>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
+    /* --- Service Worker Registration & Auto-Update --- */
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').then((reg) => {
+          reg.update();
+        }).catch(err => console.error('SW Error:', err));
+
+        let refreshing = false;
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+          if (!refreshing) {
+            refreshing = true;
+            window.location.reload();
+          }
+        });
+      });
+    }
+
+    // Initialize UI
+    updateDisplay();
+    renderDashboard();
+  </script>
+</body>
+</html>

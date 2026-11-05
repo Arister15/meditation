@@ -1,0 +1,19 @@
+{
+  "name": "Zen Meditation",
+  "short_name": "Zen",
+  "description": "Minimal Daily Meditation Tracker",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a0a0c",
+  "theme_color": "#0a0a0c",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%230a0a0c'/%3E%3Ccircle cx='256' cy='256' r='140' stroke='%23d4a373' stroke-width='16' fill='none'/%3E%3Ccircle cx='256' cy='256' r='20' fill='%23d4a373'/%3E%3C/svg%3E",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
