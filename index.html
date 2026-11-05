@@ -42,31 +42,41 @@
       overscroll-behavior: none;
       position: fixed;
       width: 100%;
+      background-color: var(--bg);
     }
 
     body {
-      background-color: var(--bg);
       color: var(--text-main);
       font-family: var(--font);
       display: flex;
       flex-direction: column;
-      padding: env(safe-area-inset-top, 20px) 1.25rem env(safe-area-inset-bottom, 20px);
+      /* edge-to-edge: zero bottom/horizontal padding, content flows cleanly to edges */
+      padding: env(safe-area-inset-top, 20px) 0 0 0;
+    }
+
+    .app-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 1rem 1.4rem calc(env(safe-area-inset-bottom, 0px) + 0.5rem);
+      height: 100%;
+      box-sizing: border-box;
     }
 
     header {
-      padding: 0.6rem 0 0.2rem;
+      padding: 1.2rem 0 0.8rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      max-width: 420px;
-      margin: 0 auto;
       width: 100%;
+      max-width: 440px;
+      margin: 0 auto;
       flex-shrink: 0;
     }
 
     .app-title {
-      font-size: 1.05rem;
-      letter-spacing: 0.35em;
+      font-size: 1.15rem;
+      letter-spacing: 0.38em;
       text-transform: uppercase;
       color: var(--accent);
       font-weight: 600;
@@ -77,14 +87,14 @@
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       color: var(--text-main);
-      width: 34px;
-      height: 34px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.25rem;
+      font-size: 1.3rem;
       transition: background 0.2s, transform 0.1s;
     }
 
@@ -93,15 +103,15 @@
       background: var(--accent-dim);
     }
 
-    /* Fixed Upper Stage - Keeps lower elements locked at fixed vertical positions */
+    /* Spacious Upper Stage - pushed lower with generous breathing room */
     .top-interactive-stage {
       display: flex;
       flex-direction: column;
       align-items: center;
-      height: 390px;
+      height: 440px;
       justify-content: space-between;
-      margin-top: 0.2rem;
-      margin-bottom: 0.8rem;
+      margin-top: 1rem;
+      margin-bottom: 1.6rem;
       flex-shrink: 0;
     }
 
@@ -111,18 +121,18 @@
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 999px;
-      padding: 4px;
+      padding: 5px;
       width: 100%;
-      max-width: 290px;
+      max-width: 300px;
     }
 
     .mode-btn {
       flex: 1;
-      padding: 7px 16px;
+      padding: 8px 18px;
       border: none;
       background: transparent;
       color: var(--text-muted);
-      font-size: 0.82rem;
+      font-size: 0.84rem;
       font-weight: 500;
       border-radius: 999px;
       cursor: pointer;
@@ -138,11 +148,12 @@
     /* Central Timer/Stopwatch Dial */
     .circle-wrapper {
       position: relative;
-      width: 220px;
-      height: 220px;
+      width: 230px;
+      height: 230px;
       display: flex;
       align-items: center;
       justify-content: center;
+      margin: 0.4rem 0;
     }
 
     .progress-ring {
@@ -163,7 +174,7 @@
       stroke-width: 4;
       stroke-linecap: round;
       fill: transparent;
-      stroke-dasharray: 660;
+      stroke-dasharray: 691;
       stroke-dashoffset: 0;
       transition: stroke-dashoffset 0.25s linear;
     }
@@ -177,7 +188,7 @@
     }
 
     .time-digits {
-      font-size: 3.5rem;
+      font-size: 3.6rem;
       font-weight: 300;
       letter-spacing: -0.02em;
       font-variant-numeric: tabular-nums;
@@ -186,7 +197,7 @@
 
     /* Stepper / Quick Time Adjuster */
     .presets-container {
-      height: 38px;
+      height: 42px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -200,7 +211,7 @@
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 999px;
-      padding: 3px 6px;
+      padding: 4px 8px;
     }
 
     .time-stepper.hidden {
@@ -212,9 +223,9 @@
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--card-border);
       color: var(--text-main);
-      font-size: 0.72rem;
+      font-size: 0.74rem;
       font-weight: 600;
-      padding: 5px 10px;
+      padding: 6px 11px;
       border-radius: 999px;
       cursor: pointer;
       transition: background 0.15s, transform 0.1s;
@@ -227,17 +238,17 @@
     }
 
     .stepper-label {
-      font-size: 0.82rem;
+      font-size: 0.85rem;
       font-weight: 500;
       color: var(--accent);
-      min-width: 46px;
+      min-width: 54px;
       text-align: center;
       font-variant-numeric: tabular-nums;
     }
 
     /* Controls bar */
     .controls-container {
-      height: 60px;
+      height: 64px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -246,7 +257,7 @@
 
     .controls {
       display: flex;
-      gap: 18px;
+      gap: 20px;
       justify-content: center;
       align-items: center;
     }
@@ -255,16 +266,16 @@
       background: var(--accent);
       color: #0a0a0c;
       border: none;
-      width: 58px;
-      height: 58px;
+      width: 62px;
+      height: 62px;
       border-radius: 50%;
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       font-weight: 600;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 18px rgba(212, 163, 115, 0.25);
+      box-shadow: 0 4px 20px rgba(212, 163, 115, 0.25);
       transition: transform 0.15s, opacity 0.15s;
     }
 
@@ -276,11 +287,11 @@
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       color: var(--text-muted);
-      width: 44px;
-      height: 44px;
+      width: 46px;
+      height: 46px;
       border-radius: 50%;
       cursor: pointer;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -301,16 +312,16 @@
     .dashboard {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 1.2rem;
+      gap: 14px;
+      margin-bottom: 1.6rem;
       flex-shrink: 0;
     }
 
     .card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 1rem 1.1rem;
+      border-radius: 18px;
+      padding: 1.15rem 1.25rem;
       position: relative;
     }
 
@@ -325,9 +336,9 @@
     .card-label {
       font-size: 0.72rem;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.09em;
       color: var(--text-muted);
-      margin-bottom: 6px;
+      margin-bottom: 7px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -341,19 +352,19 @@
     }
 
     .card-val {
-      font-size: 1.65rem;
+      font-size: 1.75rem;
       font-weight: 500;
       color: var(--text-main);
     }
 
     .card-unit {
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       font-weight: 400;
       color: var(--text-muted);
-      margin-left: 3px;
+      margin-left: 4px;
     }
 
-    /* History section - internal scrolling only if needed */
+    /* History section - runs flush down to screen edge */
     .history-section {
       flex: 1;
       display: flex;
@@ -367,7 +378,7 @@
       text-transform: uppercase;
       letter-spacing: 0.1em;
       color: var(--text-muted);
-      margin-bottom: 0.6rem;
+      margin-bottom: 0.7rem;
       flex-shrink: 0;
     }
 
@@ -378,18 +389,18 @@
       -webkit-overflow-scrolling: touch;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 9px;
     }
 
     .history-row {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      padding: 10px 14px;
-      border-radius: 12px;
+      padding: 12px 16px;
+      border-radius: 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.88rem;
+      font-size: 0.9rem;
       flex-shrink: 0;
     }
 
@@ -405,8 +416,8 @@
     .empty-state {
       text-align: center;
       color: var(--text-muted);
-      font-size: 0.82rem;
-      padding: 1rem 0;
+      font-size: 0.85rem;
+      padding: 1.2rem 0;
     }
 
     /* Modal Sheet Styling */
@@ -437,7 +448,7 @@
       border-radius: 24px 24px 0 0;
       width: 100%;
       max-width: 480px;
-      padding: 1.4rem 1.4rem calc(1.4rem + env(safe-area-inset-bottom, 20px));
+      padding: 1.5rem 1.5rem calc(1.5rem + env(safe-area-inset-bottom, 20px));
       transform: translateY(100%);
       transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
       max-height: 85vh;
@@ -457,7 +468,7 @@
     }
 
     .modal-title {
-      font-size: 1.05rem;
+      font-size: 1.1rem;
       font-weight: 500;
       color: var(--text-main);
     }
@@ -580,65 +591,67 @@
 </head>
 <body>
 
-  <header>
-    <div class="app-title">ZEN</div>
-    <button class="btn-header-action" onclick="openManualEntryModal()" title="Manual Log">+</button>
-  </header>
+  <div class="app-wrapper">
+    <header>
+      <div class="app-title">ZEN</div>
+      <button class="btn-header-action" onclick="openManualEntryModal()" title="Manual Log">+</button>
+    </header>
 
-  <div class="top-interactive-stage">
-    <nav class="mode-nav">
-      <button class="mode-btn active" id="btnModeStopwatch" onclick="switchMode('stopwatch')">Stopwatch</button>
-      <button class="mode-btn" id="btnModeTimer" onclick="switchMode('timer')">Timer</button>
-    </nav>
+    <div class="top-interactive-stage">
+      <nav class="mode-nav">
+        <button class="mode-btn active" id="btnModeStopwatch" onclick="switchMode('stopwatch')">Stopwatch</button>
+        <button class="mode-btn" id="btnModeTimer" onclick="switchMode('timer')">Timer</button>
+      </nav>
 
-    <div class="circle-wrapper">
-      <svg class="progress-ring" width="220" height="220">
-        <circle class="progress-ring-bg" cx="110" cy="110" r="105" />
-        <circle class="progress-ring-circle" id="progressRing" cx="110" cy="110" r="105" />
-      </svg>
-      <div class="timer-text-wrap">
-        <div class="time-digits" id="timeDisplay">00:00</div>
+      <div class="circle-wrapper">
+        <svg class="progress-ring" width="230" height="230">
+          <circle class="progress-ring-bg" cx="115" cy="115" r="110" />
+          <circle class="progress-ring-circle" id="progressRing" cx="115" cy="115" r="110" />
+        </svg>
+        <div class="timer-text-wrap">
+          <div class="time-digits" id="timeDisplay">00:00</div>
+        </div>
+      </div>
+
+      <!-- Quick Stepper Adjuster -->
+      <div class="presets-container">
+        <div class="time-stepper hidden" id="stepperRow">
+          <button class="stepper-btn" onclick="adjustTimerDuration(-5)">-5 min</button>
+          <button class="stepper-btn" onclick="adjustTimerDuration(-1)">-1 min</button>
+          <span class="stepper-label" id="stepperDurationLabel">10 min</span>
+          <button class="stepper-btn" onclick="adjustTimerDuration(1)">+1 min</button>
+          <button class="stepper-btn" onclick="adjustTimerDuration(5)">+5 min</button>
+        </div>
+      </div>
+
+      <div class="controls-container">
+        <div class="controls">
+          <button class="btn-secondary" id="btnReset" onclick="resetCurrentSession()" title="Reset" disabled>✕</button>
+          <button class="btn-action" id="btnToggle" onclick="toggleSession()">▶</button>
+          <button class="btn-secondary" id="btnSave" onclick="manualSaveStopwatch()" title="Finish" disabled>✓</button>
+        </div>
       </div>
     </div>
 
-    <!-- Stepper Container: Quick, user-friendly tap adjustment without typing -->
-    <div class="presets-container">
-      <div class="time-stepper hidden" id="stepperRow">
-        <button class="stepper-btn" onclick="adjustTimerDuration(-5)">-5m</button>
-        <button class="stepper-btn" onclick="adjustTimerDuration(-1)">-1m</button>
-        <span class="stepper-label" id="stepperDurationLabel">10m</span>
-        <button class="stepper-btn" onclick="adjustTimerDuration(1)">+1m</button>
-        <button class="stepper-btn" onclick="adjustTimerDuration(5)">+5m</button>
+    <div class="dashboard">
+      <div class="card clickable" onclick="openManageSessionsModal()" title="View today's sessions">
+        <div class="card-label">
+          <span>Today</span>
+          <span class="card-label-hint">View ↗</span>
+        </div>
+        <div class="card-val"><span id="metricToday">0.0</span><span class="card-unit">min</span></div>
+      </div>
+      <div class="card">
+        <div class="card-label">Current Week</div>
+        <div class="card-val"><span id="metricWeekAvg">0.0</span><span class="card-unit">min/day</span></div>
       </div>
     </div>
 
-    <div class="controls-container">
-      <div class="controls">
-        <button class="btn-secondary" id="btnReset" onclick="resetCurrentSession()" title="Reset" disabled>✕</button>
-        <button class="btn-action" id="btnToggle" onclick="toggleSession()">▶</button>
-        <button class="btn-secondary" id="btnSave" onclick="manualSaveStopwatch()" title="Finish" disabled>✓</button>
+    <div class="history-section">
+      <div class="section-title">Weekly History (Daily Avg)</div>
+      <div class="history-list" id="historyList">
+        <div class="empty-state">No completed weeks yet</div>
       </div>
-    </div>
-  </div>
-
-  <div class="dashboard">
-    <div class="card clickable" onclick="openManageSessionsModal()" title="View today's sessions">
-      <div class="card-label">
-        <span>Today</span>
-        <span class="card-label-hint">View ↗</span>
-      </div>
-      <div class="card-val"><span id="metricToday">0.0</span><span class="card-unit">m</span></div>
-    </div>
-    <div class="card">
-      <div class="card-label">Current Week</div>
-      <div class="card-val"><span id="metricWeekAvg">0.0</span><span class="card-unit">m/d</span></div>
-    </div>
-  </div>
-
-  <div class="history-section">
-    <div class="section-title">Weekly History (Daily Avg)</div>
-    <div class="history-list" id="historyList">
-      <div class="empty-state">No completed weeks yet</div>
     </div>
   </div>
 
@@ -677,16 +690,21 @@
   <script>
     /* --- Storage Keys --- */
     const STORAGE_KEY = 'zen_meditation_sessions_v1';
+    const TIMER_PREF_KEY = 'zen_meditation_last_timer_sec';
 
     /* --- App State --- */
     let currentMode = 'stopwatch'; // 'stopwatch' | 'timer'
     let isRunning = false;
-    let timerDurationSeconds = 10 * 60;
+    
+    // Remember last used timer duration, defaulting to 10 minutes (600s)
+    let savedDuration = parseInt(localStorage.getItem(TIMER_PREF_KEY), 10);
+    let timerDurationSeconds = (!isNaN(savedDuration) && savedDuration >= 60) ? savedDuration : (10 * 60);
+
     let elapsedSeconds = 0;
     let intervalId = null;
     let wakeLock = null;
 
-    const ringRadius = 105;
+    const ringRadius = 110;
     const ringCircumference = 2 * Math.PI * ringRadius;
 
     // Elements
@@ -704,7 +722,43 @@
     progressRing.style.strokeDasharray = `${ringCircumference} ${ringCircumference}`;
     progressRing.style.strokeDashoffset = '0';
 
-    /* --- Audio Synthesizer (Zen Bell) --- */
+    /* --- Audio Synthesizers --- */
+    // 1. Classic iPhone Timer Chime Synthesis (Marimba style melodic notes)
+    function playIPhoneTimerChime() {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        const ctx = new AudioContext();
+
+        // Characteristic 4-tone marimba chime sequence (C6, E6, G6, C7)
+        const notes = [1046.50, 1318.51, 1567.98, 2093.00];
+        
+        notes.forEach((freq, idx) => {
+          const startTime = ctx.currentTime + (idx * 0.14);
+          const duration = 0.45;
+
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, startTime);
+
+          gain.gain.setValueAtTime(0.0001, startTime);
+          gain.gain.exponentialRampToValueAtTime(0.7, startTime + 0.015);
+          gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+
+          osc.start(startTime);
+          osc.stop(startTime + duration);
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    // 2. Zen Singing Bell for Stopwatch finish
     function playZenBell() {
       try {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -798,13 +852,11 @@
       renderTodaySessionsList();
     }
 
-    /* --- Rounding & Calculation Rules --- */
-    // Stopwatch: round down to the nearest half-minute (0.5m)
+    /* --- Calculation Rules --- */
     function roundStopwatchMinutes(seconds) {
       return Math.floor(seconds / 30) * 0.5;
     }
 
-    // Weekly average: divide total by 7, truncate down to 1 decimal place
     function calculateDailyAverageTruncated(totalMinutes) {
       return Math.floor((totalMinutes / 7) * 10) / 10;
     }
@@ -820,6 +872,7 @@
       if (mode === 'timer') {
         stepperRow.classList.remove('hidden');
         btnSave.classList.add('hidden-slot');
+        stepperDurationLabel.textContent = `${Math.round(timerDurationSeconds / 60)} min`;
       } else {
         stepperRow.classList.add('hidden');
         btnSave.classList.remove('hidden-slot');
@@ -828,7 +881,7 @@
       updateDisplay();
     }
 
-    /* --- Quick Stepper for Timer Duration --- */
+    /* --- Stepper Adjuster & Persistence --- */
     function adjustTimerDuration(deltaMinutes) {
       if (isRunning) resetCurrentSession();
       let currentMins = Math.round(timerDurationSeconds / 60);
@@ -837,7 +890,8 @@
       if (updatedMins > 180) updatedMins = 180;
 
       timerDurationSeconds = updatedMins * 60;
-      stepperDurationLabel.textContent = `${updatedMins}m`;
+      localStorage.setItem(TIMER_PREF_KEY, timerDurationSeconds.toString());
+      stepperDurationLabel.textContent = `${updatedMins} min`;
       updateDisplay();
     }
 
@@ -897,7 +951,7 @@
 
     function finishTimer() {
       pauseSession();
-      playZenBell();
+      playIPhoneTimerChime();
       const mins = timerDurationSeconds / 60;
       saveSessionRecord(mins);
       resetCurrentSession();
@@ -931,13 +985,13 @@
       const currentMonday = getMondayOfWeek(now);
       const currentMondayStr = getTodayDateString(currentMonday);
 
-      // 1. Today's total
+      // 1. Today's total (min)
       const todaySum = sessions
         .filter(s => s.date === todayStr)
         .reduce((acc, cur) => acc + cur.minutes, 0);
       metricToday.textContent = todaySum.toFixed(1);
 
-      // 2. Current week live average (/ 7, round down to 1 decimal)
+      // 2. Current week live daily average (min/day)
       const currentWeekSunday = new Date(currentMonday);
       currentWeekSunday.setDate(currentWeekSunday.getDate() + 6);
       const currentSundayStr = getTodayDateString(currentWeekSunday);
@@ -980,7 +1034,7 @@
           return `
             <div class="history-row">
               <span class="history-date">${formatShortDate(item.monday)} - ${formatShortDate(sun)}</span>
-              <span class="history-avg">${avg.toFixed(1)} m/d</span>
+              <span class="history-avg">${avg.toFixed(1)} min/day</span>
             </div>
           `;
         }).join('');
@@ -1002,7 +1056,7 @@
       }
     }
 
-    // Modal 1: Direct Session Entry
+    // Modal 1: Manual Session Entry
     function openManualEntryModal() {
       document.getElementById('manualDateInput').value = getTodayDateString();
       document.getElementById('manualMinutesInput').value = '';
@@ -1065,6 +1119,7 @@
     }
 
     // Initialize UI
+    stepperDurationLabel.textContent = `${Math.round(timerDurationSeconds / 60)} min`;
     switchMode('stopwatch');
     renderDashboard();
   </script>
