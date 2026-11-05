@@ -1,54 +1,35 @@
-const CACHE_NAME = 'zen-meditation-v1';
-const ASSETS_TO_CACHE = [
-  './',
-  './index.html',
-  './manifest.json'
-];
+const CACHE_NAME = 'zen-offline-store';
 
-// Εγκατάσταση και άμεση ενεργοποίηση (skip waiting)
 self.addEventListener('install', (event) => {
   self.skipWaiting();
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS_TO_CACHE);
-    })
-  );
 });
 
-// Εκκαθάριση παλαιών caches και ανάληψη ελέγχου των clients
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((keys) => {
-      return Promise.all(
-        keys.map((key) => {
-          if (key !== CACHE_NAME) {
-            return caches.delete(key);
-          }
-        })
-      );
-    }).then(() => self.clients.claim())
+    clients.claim()
   );
 });
 
-// Network-first στρατηγική: Δοκιμάζει δίκτυο πρώτα (για να βλέπει άμεσα τις αλλαγές)
-// και αν δεν υπάρχει σύνδεση, σερβίρει από την cache
+// Network-First με dynamic timestamp cache bypass
+// Φέρνει ΠΑΝΤΑ ζωντανό τον νέο κώδικα όταν υπάρχει δίκτυο
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
   event.respondWith(
-    fetch(event.request)
+    fetch(event.request, { cache: 'no-store' })
       .then((networkResponse) => {
         if (networkResponse && networkResponse.status === 200) {
-          const responseToCache = networkResponse.clone();
+          const responseClone = networkResponse.clone();
           caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
+            cache.put(event.request, responseClone);
           });
         }
         return networkResponse;
       })
       .catch(() => {
-        return caches.match(event.request).then((cachedResponse) => {
-          if (cachedResponse) return cachedResponse;
+        // Fallback ΜΟΝΟ αν δεν υπάρχει ίντερνετ (Offline mode)
+        return caches.match(event.request).then((cached) => {
+          if (cached) return cached;
           if (event.request.mode === 'navigate') {
             return caches.match('./index.html');
           }

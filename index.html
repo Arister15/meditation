@@ -50,7 +50,6 @@
       font-family: var(--font);
       display: flex;
       flex-direction: column;
-      /* edge-to-edge: zero bottom/horizontal padding, content flows cleanly to edges */
       padding: env(safe-area-inset-top, 20px) 0 0 0;
     }
 
@@ -103,7 +102,7 @@
       background: var(--accent-dim);
     }
 
-    /* Spacious Upper Stage - pushed lower with generous breathing room */
+    /* Spacious Upper Stage */
     .top-interactive-stage {
       display: flex;
       flex-direction: column;
@@ -145,7 +144,7 @@
       font-weight: 600;
     }
 
-    /* Central Timer/Stopwatch Dial */
+    /* Central Dial */
     .circle-wrapper {
       position: relative;
       width: 230px;
@@ -195,7 +194,7 @@
       line-height: 1;
     }
 
-    /* Stepper / Quick Time Adjuster */
+    /* Stepper */
     .presets-container {
       height: 42px;
       display: flex;
@@ -246,7 +245,7 @@
       font-variant-numeric: tabular-nums;
     }
 
-    /* Controls bar */
+    /* Controls */
     .controls-container {
       height: 64px;
       display: flex;
@@ -364,7 +363,7 @@
       margin-left: 4px;
     }
 
-    /* History section - runs flush down to screen edge */
+    /* History section */
     .history-section {
       flex: 1;
       display: flex;
@@ -420,7 +419,7 @@
       padding: 1.2rem 0;
     }
 
-    /* Modal Sheet Styling */
+    /* Modals */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -535,7 +534,6 @@
       opacity: 0.85;
     }
 
-    /* Modal Sessions Scroll */
     .session-items-scroll {
       overflow-y: auto;
       overscroll-behavior: contain;
@@ -613,7 +611,6 @@
         </div>
       </div>
 
-      <!-- Quick Stepper Adjuster -->
       <div class="presets-container">
         <div class="time-stepper hidden" id="stepperRow">
           <button class="stepper-btn" onclick="adjustTimerDuration(-5)">-5 min</button>
@@ -723,14 +720,12 @@
     progressRing.style.strokeDashoffset = '0';
 
     /* --- Audio Synthesizers --- */
-    // 1. Classic iPhone Timer Chime Synthesis (Marimba style melodic notes)
     function playIPhoneTimerChime() {
       try {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         if (!AudioContext) return;
         const ctx = new AudioContext();
 
-        // Characteristic 4-tone marimba chime sequence (C6, E6, G6, C7)
         const notes = [1046.50, 1318.51, 1567.98, 2093.00];
         
         notes.forEach((freq, idx) => {
@@ -758,7 +753,6 @@
       }
     }
 
-    // 2. Zen Singing Bell for Stopwatch finish
     function playZenBell() {
       try {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -861,7 +855,7 @@
       return Math.floor((totalMinutes / 7) * 10) / 10;
     }
 
-    /* --- Mode Switching (Zero Layout Shift) --- */
+    /* --- Mode Switching --- */
     function switchMode(mode) {
       if (isRunning) resetCurrentSession();
       currentMode = mode;
@@ -881,7 +875,6 @@
       updateDisplay();
     }
 
-    /* --- Stepper Adjuster & Persistence --- */
     function adjustTimerDuration(deltaMinutes) {
       if (isRunning) resetCurrentSession();
       let currentMins = Math.round(timerDurationSeconds / 60);
@@ -985,13 +978,13 @@
       const currentMonday = getMondayOfWeek(now);
       const currentMondayStr = getTodayDateString(currentMonday);
 
-      // 1. Today's total (min)
+      // Today's total (min)
       const todaySum = sessions
         .filter(s => s.date === todayStr)
         .reduce((acc, cur) => acc + cur.minutes, 0);
       metricToday.textContent = todaySum.toFixed(1);
 
-      // 2. Current week live daily average (min/day)
+      // Current week live daily average (min/day)
       const currentWeekSunday = new Date(currentMonday);
       currentWeekSunday.setDate(currentWeekSunday.getDate() + 6);
       const currentSundayStr = getTodayDateString(currentWeekSunday);
@@ -1003,7 +996,7 @@
       const currentWeekAvg = calculateDailyAverageTruncated(currentWeekSum);
       metricWeekAvg.textContent = currentWeekAvg.toFixed(1);
 
-      // 3. Past completed weeks history
+      // Past completed weeks history
       const pastWeeksMap = {};
 
       sessions.forEach(s => {
@@ -1056,7 +1049,6 @@
       }
     }
 
-    // Modal 1: Manual Session Entry
     function openManualEntryModal() {
       document.getElementById('manualDateInput').value = getTodayDateString();
       document.getElementById('manualMinutesInput').value = '';
@@ -1073,7 +1065,6 @@
       }
     }
 
-    // Modal 2: View & Delete Today's Sessions
     function openManageSessionsModal() {
       renderTodaySessionsList();
       openModal('modalManageSessions');
@@ -1101,12 +1092,21 @@
       `).join('');
     }
 
-    /* --- Service Worker Registration & Auto-Update --- */
+    /* --- Auto-Update: No version changes needed on git push --- */
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js').then((reg) => {
-          reg.update();
-        }).catch(err => console.error('SW Error:', err));
+        // dynamic timestamp ensures iOS/Safari never caches the registration file
+        navigator.serviceWorker.register('./sw.js?t=' + Date.now(), { updateViaCache: 'none' })
+          .then((reg) => {
+            reg.update();
+
+            document.addEventListener('visibilitychange', () => {
+              if (document.visibilityState === 'visible') {
+                reg.update();
+              }
+            });
+          })
+          .catch((err) => console.error('SW Error:', err));
 
         let refreshing = false;
         navigator.serviceWorker.addEventListener('controllerchange', () => {
