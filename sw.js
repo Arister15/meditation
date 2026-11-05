@@ -1,39 +1,25 @@
-const CACHE_NAME = 'zen-offline-store';
+const CACHE_NAME = 'zen-cache';
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    clients.claim()
-  );
+  event.waitUntil(self.clients.claim());
 });
 
-// Network-First με dynamic timestamp cache bypass
-// Φέρνει ΠΑΝΤΑ ζωντανό τον νέο κώδικα όταν υπάρχει δίκτυο
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
   event.respondWith(
-    fetch(event.request, { cache: 'no-store' })
-      .then((networkResponse) => {
-        if (networkResponse && networkResponse.status === 200) {
-          const responseClone = networkResponse.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseClone);
-          });
+    fetch(event.request)
+      .then((response) => {
+        if (response && response.status === 200) {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
         }
-        return networkResponse;
+        return response;
       })
-      .catch(() => {
-        // Fallback ΜΟΝΟ αν δεν υπάρχει ίντερνετ (Offline mode)
-        return caches.match(event.request).then((cached) => {
-          if (cached) return cached;
-          if (event.request.mode === 'navigate') {
-            return caches.match('./index.html');
-          }
-        });
-      })
+      .catch(() => caches.match(event.request))
   );
 });
