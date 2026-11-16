@@ -42,7 +42,7 @@
       height: 100dvh;
       overflow: hidden;
       background-color: var(--bg);
-      background-image: radial-gradient(circle at 50% 12%, rgba(212, 163, 115, 0.07) 0%, transparent 65%);
+      background-image: radial-gradient(circle at 50% 18%, rgba(212, 163, 115, 0.07) 0%, transparent 65%);
     }
 
     body {
@@ -105,56 +105,22 @@
       color: var(--accent);
     }
 
-    /* Anchored Upper Stage */
+    /* Centered Stopwatch Stage */
     .top-interactive-stage {
       display: flex;
       flex-direction: column;
       align-items: center;
-      height: 395px;
-      justify-content: space-between;
+      justify-content: center;
+      gap: 30px;
       margin: auto 0;
       flex-shrink: 0;
-    }
-
-    /* Mode Switcher */
-    .mode-nav {
-      display: flex;
-      background: rgba(20, 20, 26, 0.7);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--card-border);
-      border-radius: 999px;
-      padding: 4px;
-      width: 100%;
-      max-width: 290px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
-    }
-
-    .mode-btn {
-      flex: 1;
-      padding: 8px 16px;
-      border: none;
-      background: transparent;
-      color: var(--text-muted);
-      font-size: 0.82rem;
-      font-weight: 500;
-      border-radius: 999px;
-      cursor: pointer;
-      transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .mode-btn.active {
-      background: var(--accent);
-      color: #0a0a0c;
-      font-weight: 600;
-      box-shadow: 0 2px 10px rgba(212, 163, 115, 0.35);
     }
 
     /* Central Dial */
     .circle-wrapper {
       position: relative;
-      width: 220px;
-      height: 220px;
+      width: 224px;
+      height: 224px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -178,8 +144,8 @@
       stroke-width: 4;
       stroke-linecap: round;
       fill: transparent;
-      stroke-dasharray: 660;
-      stroke-dashoffset: 0;
+      stroke-dasharray: 672.3;
+      stroke-dashoffset: 672.3;
       transition: stroke-dashoffset 0.2s linear;
     }
 
@@ -192,81 +158,11 @@
     }
 
     .time-digits {
-      font-size: 3.6rem;
+      font-size: 3.65rem;
       font-weight: 300;
       letter-spacing: -0.02em;
       font-variant-numeric: tabular-nums;
       line-height: 1;
-    }
-
-    /* Stepper */
-    .presets-container {
-      height: 44px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-    }
-
-    .time-stepper {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      background: rgba(20, 20, 26, 0.7);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid var(--card-border);
-      border-radius: 999px;
-      padding: 4px 6px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
-    }
-
-    .time-stepper.hidden {
-      display: none !important;
-    }
-
-    .stepper-btn-circle {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid var(--card-border);
-      color: var(--text-main);
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.15s ease, background-color 0.15s ease;
-      touch-action: none;
-    }
-
-    .stepper-btn-circle:active {
-      background: var(--accent-dim);
-      color: var(--accent);
-      transform: scale(0.9);
-      border-color: rgba(212, 163, 115, 0.3);
-    }
-
-    .stepper-center {
-      display: flex;
-      align-items: baseline;
-      justify-content: center;
-      gap: 3px;
-      min-width: 66px;
-    }
-
-    .stepper-label {
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--accent);
-      font-variant-numeric: tabular-nums;
-    }
-
-    .stepper-unit {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      font-weight: 500;
     }
 
     /* Controls */
@@ -280,7 +176,7 @@
 
     .controls {
       display: flex;
-      gap: 22px;
+      gap: 24px;
       justify-content: center;
       align-items: center;
     }
@@ -311,8 +207,8 @@
       -webkit-backdrop-filter: blur(12px);
       border: 1px solid var(--card-border);
       color: var(--text-muted);
-      width: 44px;
-      height: 44px;
+      width: 46px;
+      height: 46px;
       border-radius: 50%;
       cursor: pointer;
       display: flex;
@@ -334,14 +230,6 @@
     .btn-secondary:disabled {
       opacity: 0.22;
       cursor: not-allowed;
-    }
-
-    /* Instant toggle without delay */
-    .btn-secondary.hidden-slot {
-      visibility: hidden !important;
-      opacity: 0 !important;
-      pointer-events: none !important;
-      transition: none !important;
     }
 
     /* Bottom Metrics & History Trigger */
@@ -786,38 +674,13 @@
     </header>
 
     <div class="top-interactive-stage">
-      <nav class="mode-nav">
-        <button class="mode-btn active" id="btnModeStopwatch" onclick="switchMode('stopwatch')">Stopwatch</button>
-        <button class="mode-btn" id="btnModeTimer" onclick="switchMode('timer')">Timer</button>
-      </nav>
-
       <div class="circle-wrapper">
-        <svg class="progress-ring" width="220" height="220">
-          <circle class="progress-ring-bg" cx="110" cy="110" r="105" />
-          <circle class="progress-ring-circle" id="progressRing" cx="110" cy="110" r="105" />
+        <svg class="progress-ring" width="224" height="224">
+          <circle class="progress-ring-bg" cx="112" cy="112" r="107" />
+          <circle class="progress-ring-circle" id="progressRing" cx="112" cy="112" r="107" />
         </svg>
         <div class="timer-text-wrap">
           <div class="time-digits" id="timeDisplay">00:00</div>
-        </div>
-      </div>
-
-      <div class="presets-container">
-        <div class="time-stepper hidden" id="stepperRow">
-          <button class="stepper-btn-circle" id="stepperDec" aria-label="Decrease time">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-            </svg>
-          </button>
-          <div class="stepper-center">
-            <span class="stepper-label" id="stepperDurationLabel">10</span>
-            <span class="stepper-unit">min</span>
-          </div>
-          <button class="stepper-btn-circle" id="stepperInc" aria-label="Increase time">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
-              <line x1="12" y1="5" x2="12" y2="19"></line>
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-            </svg>
-          </button>
         </div>
       </div>
 
@@ -964,17 +827,11 @@
 
   <script>
     const STORAGE_KEY = 'zen_meditation_sessions_v1';
-    const TIMER_PREF_KEY = 'zen_meditation_last_timer_sec';
 
     const ICON_PLAY = `<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" style="transform: translateX(1.5px);"><polygon points="6 4 20 12 6 20"></polygon></svg>`;
     const ICON_PAUSE = `<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><rect x="6" y="4" width="3.8" height="16" rx="1.5"></rect><rect x="14.2" y="4" width="3.8" height="16" rx="1.5"></rect></svg>`;
 
-    let currentMode = 'stopwatch';
     let isRunning = false;
-    
-    let savedDuration = parseInt(localStorage.getItem(TIMER_PREF_KEY), 10);
-    let timerDurationSeconds = (!isNaN(savedDuration) && savedDuration >= 60) ? savedDuration : (10 * 60);
-
     let elapsedSeconds = 0;
     let timerStartTimestamp = 0;
     let baseElapsedAtStart = 0;
@@ -982,7 +839,7 @@
     let wakeLock = null;
     let audioCtx = null;
 
-    const ringRadius = 105;
+    const ringRadius = 107;
     const ringCircumference = 2 * Math.PI * ringRadius;
 
     const timeDisplay = document.getElementById('timeDisplay');
@@ -990,15 +847,13 @@
     const btnToggle = document.getElementById('btnToggle');
     const btnReset = document.getElementById('btnReset');
     const btnSave = document.getElementById('btnSave');
-    const stepperRow = document.getElementById('stepperRow');
-    const stepperDurationLabel = document.getElementById('stepperDurationLabel');
     const metricToday = document.getElementById('metricToday');
     const metricWeekAvg = document.getElementById('metricWeekAvg');
     const historyList = document.getElementById('historyList');
     const historyCountBadge = document.getElementById('historyCountBadge');
 
     progressRing.style.strokeDasharray = `${ringCircumference} ${ringCircumference}`;
-    progressRing.style.strokeDashoffset = '0';
+    progressRing.style.strokeDashoffset = `${ringCircumference}`;
 
     /* Offline-Ready Audio Context Setup */
     function getAudioContext() {
@@ -1014,36 +869,6 @@
         return audioCtx;
       } catch (e) {
         return null;
-      }
-    }
-
-    function playIPhoneTimerChime() {
-      try {
-        const ctx = getAudioContext();
-        if (!ctx) return;
-        const notes = [1046.50, 1318.51, 1567.98, 2093.00];
-        
-        notes.forEach((freq, idx) => {
-          const startTime = ctx.currentTime + (idx * 0.14);
-          const duration = 0.45;
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-
-          osc.type = 'triangle';
-          osc.frequency.setValueAtTime(freq, startTime);
-
-          gain.gain.setValueAtTime(0.0001, startTime);
-          gain.gain.exponentialRampToValueAtTime(0.7, startTime + 0.015);
-          gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
-
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-
-          osc.start(startTime);
-          osc.stop(startTime + duration);
-        });
-      } catch (e) {
-        console.error(e);
       }
     }
 
@@ -1158,95 +983,6 @@
       return Math.floor((totalMinutes / 7) * 10) / 10;
     }
 
-    /* Zero-lag mode switching */
-    function switchMode(mode) {
-      if (currentMode === mode && !isRunning) return;
-
-      resetCurrentSession();
-      currentMode = mode;
-      
-      document.getElementById('btnModeStopwatch').classList.toggle('active', mode === 'stopwatch');
-      document.getElementById('btnModeTimer').classList.toggle('active', mode === 'timer');
-
-      if (mode === 'timer') {
-        stepperRow.classList.remove('hidden');
-        btnSave.classList.add('hidden-slot');
-        stepperDurationLabel.textContent = `${Math.round(timerDurationSeconds / 60)}`;
-      } else {
-        stepperRow.classList.add('hidden');
-        btnSave.classList.remove('hidden-slot');
-      }
-
-      progressRing.style.transition = 'none';
-      updateDisplay();
-      requestAnimationFrame(() => {
-        progressRing.style.transition = 'stroke-dashoffset 0.2s linear';
-      });
-    }
-
-    function adjustTimerDuration(deltaMinutes) {
-      if (isRunning) resetCurrentSession();
-      let currentMins = Math.round(timerDurationSeconds / 60);
-      let updatedMins = currentMins + deltaMinutes;
-      if (updatedMins < 1) updatedMins = 1;
-      if (updatedMins > 180) updatedMins = 180;
-
-      timerDurationSeconds = updatedMins * 60;
-      localStorage.setItem(TIMER_PREF_KEY, timerDurationSeconds.toString());
-      stepperDurationLabel.textContent = `${updatedMins}`;
-      updateDisplay();
-    }
-
-    function setupHoldButton(btn, delta) {
-      let holdTimeout = null;
-      let holdInterval = null;
-      let tickCount = 0;
-      let isTouch = false;
-
-      const trigger = () => {
-        tickCount++;
-        const currentDelta = tickCount > 7 ? delta * 5 : delta;
-        adjustTimerDuration(currentDelta);
-      };
-
-      const startHold = (e) => {
-        if (e.type === 'touchstart') {
-          isTouch = true;
-        } else if (isTouch && e.type === 'mousedown') {
-          return;
-        }
-        if (e.cancelable && e.type === 'touchstart') {
-          e.preventDefault();
-        }
-
-        adjustTimerDuration(delta);
-        tickCount = 0;
-
-        holdTimeout = setTimeout(() => {
-          holdInterval = setInterval(trigger, 110);
-        }, 320);
-      };
-
-      const clearHold = (e) => {
-        if (holdTimeout) clearTimeout(holdTimeout);
-        if (holdInterval) clearInterval(holdInterval);
-        holdTimeout = null;
-        holdInterval = null;
-        tickCount = 0;
-        if (e.type === 'touchend') {
-          setTimeout(() => { isTouch = false; }, 300);
-        }
-      };
-
-      btn.addEventListener('mousedown', startHold);
-      btn.addEventListener('touchstart', startHold, { passive: false });
-
-      btn.addEventListener('mouseup', clearHold);
-      btn.addEventListener('mouseleave', clearHold);
-      btn.addEventListener('touchend', clearHold);
-      btn.addEventListener('touchcancel', clearHold);
-    }
-
     function toggleSession() {
       getAudioContext();
       if (isRunning) {
@@ -1260,9 +996,7 @@
       isRunning = true;
       btnToggle.innerHTML = ICON_PAUSE;
       btnReset.disabled = false;
-      if (currentMode === 'stopwatch') {
-        btnSave.disabled = false;
-      }
+      btnSave.disabled = false;
       requestWakeLock();
 
       timerStartTimestamp = performance.now();
@@ -1272,15 +1006,6 @@
       intervalId = setInterval(() => {
         const deltaSeconds = Math.floor((performance.now() - timerStartTimestamp) / 1000);
         elapsedSeconds = baseElapsedAtStart + deltaSeconds;
-
-        if (currentMode === 'timer') {
-          if (elapsedSeconds >= timerDurationSeconds) {
-            elapsedSeconds = timerDurationSeconds;
-            updateDisplay();
-            finishTimer();
-            return;
-          }
-        }
         updateDisplay();
       }, 250);
     }
@@ -1310,29 +1035,12 @@
       resetCurrentSession();
     }
 
-    function finishTimer() {
-      pauseSession();
-      playIPhoneTimerChime();
-      const mins = Math.round((timerDurationSeconds / 60) * 10) / 10;
-      saveSessionRecord(mins);
-      resetCurrentSession();
-    }
-
     function updateDisplay() {
-      if (currentMode === 'stopwatch') {
-        const m = Math.floor(elapsedSeconds / 60);
-        const s = elapsedSeconds % 60;
-        timeDisplay.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-        const circleProgress = (elapsedSeconds % 60) / 60;
-        progressRing.style.strokeDashoffset = ringCircumference * (1 - circleProgress);
-      } else {
-        const remaining = Math.max(0, timerDurationSeconds - elapsedSeconds);
-        const m = Math.floor(remaining / 60);
-        const s = remaining % 60;
-        timeDisplay.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-        const progress = Math.min(1, elapsedSeconds / timerDurationSeconds);
-        progressRing.style.strokeDashoffset = ringCircumference * (1 - progress);
-      }
+      const m = Math.floor(elapsedSeconds / 60);
+      const s = elapsedSeconds % 60;
+      timeDisplay.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+      const circleProgress = (elapsedSeconds % 60) / 60;
+      progressRing.style.strokeDashoffset = ringCircumference * (1 - circleProgress);
     }
 
     function renderDashboard() {
@@ -1512,10 +1220,7 @@
     });
 
     // Initialize UI
-    setupHoldButton(document.getElementById('stepperDec'), -1);
-    setupHoldButton(document.getElementById('stepperInc'), 1);
-    stepperDurationLabel.textContent = `${Math.round(timerDurationSeconds / 60)}`;
-    switchMode('stopwatch');
+    updateDisplay();
     renderDashboard();
   </script>
 </body>
