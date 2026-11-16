@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>ZEN</title>
 
-  <!-- PWA & Mobile Web App Meta -->
-  <link rel="manifest" href="./manifest.json">
+  <!-- Self-Contained Inline PWA Manifest (100% Offline Ready) -->
+  <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22ZEN%22%2C%22short_name%22%3A%22ZEN%22%2C%22start_url%22%3A%22.%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230a0a0c%22%2C%22theme_color%22%3A%22%230a0a0c%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%253Csvg%2520xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%2520viewBox%3D%270%25200%2520512%2520512%27%253E%253Crect%2520width%3D%27512%27%2520height%3D%27512%27%2520fill%3D%27%25230a0a0c%27%2F%253E%253Ccircle%2520cx%3D%27256%27%2520cy%3D%27256%27%2520r%3D%27140%27%2520stroke%3D%27%2523d4a373%27%2520stroke-width%3D%2716%27%2520fill%3D%27none%27%2F%253E%253Ccircle%2520cx%3D%27256%27%2520cy%3D%27256%27%2520r%3D%2720%27%2520fill%3D%27%2523d4a373%27%2F%253E%253C%2Fsvg%253E%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%2C%22purpose%22%3A%22any%20maskable%22%7D%5D%7D">
   <meta name="theme-color" content="#0a0a0c">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -57,13 +57,14 @@
       flex: 1;
       display: flex;
       flex-direction: column;
-      padding: 0.8rem 1.4rem calc(env(safe-area-inset-bottom, 12px) + 0.4rem);
+      justify-content: space-between;
+      padding: 0.8rem 1.4rem calc(env(safe-area-inset-bottom, 14px) + 0.8rem);
       height: 100%;
       overflow: hidden;
     }
 
     header {
-      padding: 0.8rem 0 0.4rem;
+      padding: 0.6rem 0 0.2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -109,10 +110,9 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      height: 410px;
+      height: 395px;
       justify-content: space-between;
-      margin-top: 0.8rem;
-      margin-bottom: 1.2rem;
+      margin: auto 0;
       flex-shrink: 0;
     }
 
@@ -344,13 +344,21 @@
       transition: none !important;
     }
 
-    /* Dashboard Metrics */
+    /* Bottom Metrics & History Trigger */
+    .bottom-section {
+      width: 100%;
+      max-width: 440px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
     .dashboard {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
-      margin-bottom: 1.2rem;
-      flex-shrink: 0;
     }
 
     .card {
@@ -362,7 +370,7 @@
       padding: 1.1rem 1.2rem;
       position: relative;
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22);
-      transition: border-color 0.2s, background-color 0.2s;
+      transition: border-color 0.2s, background-color 0.2s, transform 0.15s ease;
     }
 
     .card.clickable {
@@ -372,6 +380,7 @@
     .card.clickable:active {
       background: rgba(255, 255, 255, 0.04);
       border-color: var(--card-border-highlight);
+      transform: scale(0.985);
     }
 
     .card-label {
@@ -399,6 +408,7 @@
       font-size: 1.7rem;
       font-weight: 500;
       color: var(--text-main);
+      font-variant-numeric: tabular-nums;
     }
 
     .card-unit {
@@ -408,31 +418,87 @@
       margin-left: 4px;
     }
 
-    /* History section */
-    .history-section {
-      flex: 1;
+    /* History Action Button */
+    .btn-history-trigger {
+      width: 100%;
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 14px 18px;
       display: flex;
-      flex-direction: column;
-      min-height: 0;
-      overflow: hidden;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--text-main);
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22);
+      transition: transform 0.15s ease, background-color 0.2s ease, border-color 0.2s ease;
     }
 
-    .section-title {
-      font-size: 0.74rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--text-muted);
-      margin-bottom: 0.6rem;
+    .btn-history-trigger:hover {
+      border-color: var(--card-border-highlight);
+    }
+
+    .btn-history-trigger:active {
+      transform: scale(0.985);
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(212, 163, 115, 0.35);
+    }
+
+    .history-btn-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .history-btn-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      background: var(--accent-dim);
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       flex-shrink: 0;
     }
 
-    .history-list {
-      flex: 1;
+    .history-btn-text {
+      font-size: 0.88rem;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      color: var(--text-main);
+    }
+
+    .history-btn-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .history-count-badge {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .history-chevron {
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+    }
+
+    /* History Modal List */
+    .history-items-scroll {
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
       display: flex;
       flex-direction: column;
       gap: 8px;
+      margin-top: 0.2rem;
+      max-height: 58vh;
     }
 
     .history-row {
@@ -440,29 +506,54 @@
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       border: 1px solid var(--card-border);
-      padding: 12px 16px;
+      padding: 13px 16px;
       border-radius: 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.88rem;
+      font-size: 0.9rem;
       flex-shrink: 0;
     }
 
+    .history-row.latest-week {
+      border-color: rgba(212, 163, 115, 0.25);
+      background: linear-gradient(90deg, rgba(212, 163, 115, 0.07) 0%, rgba(20, 20, 25, 0.65) 100%);
+    }
+
+    .history-date-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
     .history-date {
-      color: var(--text-muted);
+      color: var(--text-main);
+      font-weight: 400;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .history-latest-tag {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      background: var(--accent-dim);
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-weight: 600;
     }
 
     .history-avg {
       font-weight: 500;
       color: var(--accent);
+      font-variant-numeric: tabular-nums;
     }
 
     .empty-state {
       text-align: center;
       color: var(--text-muted);
-      font-size: 0.82rem;
-      padding: 1.2rem 0;
+      font-size: 0.84rem;
+      padding: 1.6rem 0;
     }
 
     /* Modals & Bottom Sheets */
@@ -487,7 +578,7 @@
     }
 
     .modal-sheet {
-      background: rgba(22, 22, 28, 0.92);
+      background: rgba(22, 22, 28, 0.94);
       backdrop-filter: blur(28px);
       -webkit-backdrop-filter: blur(28px);
       border: 1px solid var(--card-border-highlight);
@@ -521,13 +612,27 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 1.2rem;
+      margin-bottom: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .modal-title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
     }
 
     .modal-title {
       font-size: 1.12rem;
       font-weight: 500;
       color: var(--text-main);
+    }
+
+    .modal-subtitle {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
     }
 
     .modal-close {
@@ -614,7 +719,7 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
-      margin-top: 0.4rem;
+      margin-top: 0.2rem;
       max-height: 52vh;
     }
 
@@ -738,31 +843,46 @@
       </div>
     </div>
 
-    <div class="dashboard">
-      <div class="card clickable" onclick="openManageSessionsModal()" title="View today's sessions">
-        <div class="card-label">
-          <span>Today</span>
-          <span class="card-label-hint">
-            View
-            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="7" y1="17" x2="17" y2="7"></line>
-              <polyline points="7 7 17 7 17 17"></polyline>
+    <div class="bottom-section">
+      <div class="dashboard">
+        <div class="card clickable" onclick="openManageSessionsModal()" title="View today's sessions">
+          <div class="card-label">
+            <span>Today</span>
+            <span class="card-label-hint">
+              View
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="7" y1="17" x2="17" y2="7"></line>
+                <polyline points="7 7 17 7 17 17"></polyline>
+              </svg>
+            </span>
+          </div>
+          <div class="card-val"><span id="metricToday">0.0</span><span class="card-unit">min</span></div>
+        </div>
+        <div class="card">
+          <div class="card-label">Current Week</div>
+          <div class="card-val"><span id="metricWeekAvg">0.0</span><span class="card-unit">min/day</span></div>
+        </div>
+      </div>
+
+      <button class="btn-history-trigger" onclick="openHistoryModal()" aria-label="History">
+        <div class="history-btn-left">
+          <div class="history-btn-icon">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9"></circle>
+              <polyline points="12 7 12 12 15.5 14"></polyline>
+            </svg>
+          </div>
+          <span class="history-btn-text">History</span>
+        </div>
+        <div class="history-btn-right">
+          <span class="history-count-badge" id="historyCountBadge"></span>
+          <span class="history-chevron">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
             </svg>
           </span>
         </div>
-        <div class="card-val"><span id="metricToday">0.0</span><span class="card-unit">min</span></div>
-      </div>
-      <div class="card">
-        <div class="card-label">Current Week</div>
-        <div class="card-val"><span id="metricWeekAvg">0.0</span><span class="card-unit">min/day</span></div>
-      </div>
-    </div>
-
-    <div class="history-section">
-      <div class="section-title">Weekly History (Daily Avg)</div>
-      <div class="history-list" id="historyList">
-        <div class="empty-state">No completed weeks yet</div>
-      </div>
+      </button>
     </div>
   </div>
 
@@ -782,7 +902,6 @@
       <form class="modal-form" onsubmit="event.preventDefault(); submitManualEntry();">
         <div class="input-group">
           <label class="input-label" for="manualMinutesInput">Duration (Minutes)</label>
-          <!-- lang="en" & inputmode="decimal" ensures the period '.' is available on mobile keyboards -->
           <input 
             type="text" 
             inputmode="decimal" 
@@ -821,6 +940,28 @@
     </div>
   </div>
 
+  <!-- Modal 3: Weekly History (Daily Avg) -->
+  <div class="modal-backdrop" id="modalHistory" onclick="onBackdropClick(event, 'modalHistory')">
+    <div class="modal-sheet">
+      <div class="modal-drag-handle"></div>
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <div class="modal-title">History</div>
+          <div class="modal-subtitle">Weekly Daily Average</div>
+        </div>
+        <button class="modal-close" onclick="closeModal('modalHistory')" aria-label="Close">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="history-items-scroll" id="historyList">
+        <div class="empty-state">No completed weeks yet</div>
+      </div>
+    </div>
+  </div>
+
   <script>
     const STORAGE_KEY = 'zen_meditation_sessions_v1';
     const TIMER_PREF_KEY = 'zen_meditation_last_timer_sec';
@@ -854,11 +995,12 @@
     const metricToday = document.getElementById('metricToday');
     const metricWeekAvg = document.getElementById('metricWeekAvg');
     const historyList = document.getElementById('historyList');
+    const historyCountBadge = document.getElementById('historyCountBadge');
 
     progressRing.style.strokeDasharray = `${ringCircumference} ${ringCircumference}`;
     progressRing.style.strokeDashoffset = '0';
 
-    /* Audio Context Setup */
+    /* Offline-Ready Audio Context Setup */
     function getAudioContext() {
       try {
         const AudioCtxClass = window.AudioContext || window.webkitAudioContext;
@@ -971,8 +1113,11 @@
       return date;
     }
 
+    /* Day/Month format (Μέρα/Μήνας) */
     function formatShortDate(d) {
-      return `${d.getMonth() + 1}/${d.getDate()}`;
+      const day = String(d.getDate()).padStart(2, '0');
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      return `${day}/${month}`;
     }
 
     function getSessions() {
@@ -1231,18 +1376,25 @@
         }
       });
 
+      /* Sort newest week first (top of list) */
       const sortedWeeks = Object.values(pastWeeksMap).sort((a, b) => b.monday - a.monday);
 
       if (sortedWeeks.length === 0) {
+        historyCountBadge.textContent = '';
         historyList.innerHTML = `<div class="empty-state">No completed weeks yet</div>`;
       } else {
-        historyList.innerHTML = sortedWeeks.map(item => {
+        historyCountBadge.textContent = `${sortedWeeks.length} ${sortedWeeks.length === 1 ? 'week' : 'weeks'}`;
+        historyList.innerHTML = sortedWeeks.map((item, idx) => {
           const sun = new Date(item.monday);
           sun.setDate(sun.getDate() + 6);
           const avg = calculateDailyAverageTruncated(item.totalMinutes);
+          const isLatest = idx === 0;
           return `
-            <div class="history-row">
-              <span class="history-date">${formatShortDate(item.monday)} - ${formatShortDate(sun)}</span>
+            <div class="history-row ${isLatest ? 'latest-week' : ''}">
+              <div class="history-date-wrap">
+                <span class="history-date">${formatShortDate(item.monday)} - ${formatShortDate(sun)}</span>
+                ${isLatest ? '<span class="history-latest-tag">Latest</span>' : ''}
+              </div>
               <span class="history-avg">${avg.toFixed(1)} min/day</span>
             </div>
           `;
@@ -1268,12 +1420,12 @@
       if (e.key === 'Escape') {
         closeModal('modalManualEntry');
         closeModal('modalManageSessions');
+        closeModal('modalHistory');
       }
     });
 
     const manualMinutesInput = document.getElementById('manualMinutesInput');
 
-    // Auto-convert any typed comma into a period in real-time
     manualMinutesInput.addEventListener('input', (e) => {
       if (e.target.value.includes(',')) {
         e.target.value = e.target.value.replace(',', '.');
@@ -1308,6 +1460,11 @@
       openModal('modalManageSessions');
     }
 
+    function openHistoryModal() {
+      renderDashboard();
+      openModal('modalHistory');
+    }
+
     function renderTodaySessionsList() {
       const container = document.getElementById('sessionItemsContainer');
       const sessions = getSessions();
@@ -1335,14 +1492,24 @@
       `).join('');
     }
 
-    /* Service Worker Registration */
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js')
-          .then((reg) => reg.update())
-          .catch((err) => console.error('SW Error:', err));
-      });
-    }
+    /* Offline Cache & Optional Service Worker Setup */
+    window.addEventListener('load', () => {
+      if ('caches' in window && (location.protocol === 'http:' || location.protocol === 'https:')) {
+        caches.open('zen-offline-v1')
+          .then(cache => cache.add(window.location.href))
+          .catch(() => {});
+      }
+
+      if ('serviceWorker' in navigator && (location.protocol === 'http:' || location.protocol === 'https:')) {
+        fetch('./sw.js', { method: 'HEAD' })
+          .then(res => {
+            if (res.ok) {
+              navigator.serviceWorker.register('./sw.js').then(reg => reg.update());
+            }
+          })
+          .catch(() => {});
+      }
+    });
 
     // Initialize UI
     setupHoldButton(document.getElementById('stepperDec'), -1);
